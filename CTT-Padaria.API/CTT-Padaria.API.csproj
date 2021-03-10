@@ -5,5 +5,9 @@
     <RootNamespace>CTT_Padaria.API</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 
 </Project>
