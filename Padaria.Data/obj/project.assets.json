@@ -8,25 +8,24 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\bramo\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Karina Moreira\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\Padaria.Data\\Padaria.Data.csproj",
+      "projectUniqueName": "C:\\Users\\Karina Moreira\\C#\\CTT-Padaria\\Padaria.Data\\Padaria.Data.csproj",
       "projectName": "Padaria.Data",
-      "projectPath": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\Padaria.Data\\Padaria.Data.csproj",
-      "packagesPath": "C:\\Users\\bramo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\Padaria.Data\\obj\\",
+      "projectPath": "C:\\Users\\Karina Moreira\\C#\\CTT-Padaria\\Padaria.Data\\Padaria.Data.csproj",
+      "packagesPath": "C:\\Users\\Karina Moreira\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Karina Moreira\\C#\\CTT-Padaria\\Padaria.Data\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\bramo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\Karina Moreira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
