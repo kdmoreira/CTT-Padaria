@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\CTT-Padaria.API\\CTT-Padaria.API.csproj",
-      "projectName": "CTT-Padaria.API",
-      "projectPath": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\CTT-Padaria.API\\CTT-Padaria.API.csproj",
+      "projectUniqueName": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\Padaria.Data\\Padaria.Data.csproj",
+      "projectName": "Padaria.Data",
+      "projectPath": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\Padaria.Data\\Padaria.Data.csproj",
       "packagesPath": "C:\\Users\\bramo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\CTT-Padaria.API\\obj\\",
+      "outputPath": "C:\\Users\\bramo\\Área de Trabalho\\Desenvolvimento\\CampinasTech\\CTT-Padaria\\CTT-Padaria\\Padaria.Data\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -61,9 +61,6 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTT-Padaria.API", "CTT-Padaria.API\CTT-Padaria.API.csproj", "{C61B89CD-A323-47DE-9D1B-B868347F90A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTT-Padaria.API", "CTT-Padaria.API\CTT-Padaria.API.csproj", "{C61B89CD-A323-47DE-9D1B-B868347F90A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Padaria.Data", "Padaria.Data\Padaria.Data.csproj", "{9E3F3F13-D9F5-430F-92CC-79A883564A3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C61B89CD-A323-47DE-9D1B-B868347F90A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C61B89CD-A323-47DE-9D1B-B868347F90A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C61B89CD-A323-47DE-9D1B-B868347F90A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E3F3F13-D9F5-430F-92CC-79A883564A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E3F3F13-D9F5-430F-92CC-79A883564A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E3F3F13-D9F5-430F-92CC-79A883564A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E3F3F13-D9F5-430F-92CC-79A883564A3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
