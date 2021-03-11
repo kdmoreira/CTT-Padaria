@@ -18,12 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\Interface\" />
-    <Folder Include="Contexto\" />
-    <Folder Include="Repository\Implementation\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Padaria.Domain\Padaria.Domain.csproj" />
   </ItemGroup>
 

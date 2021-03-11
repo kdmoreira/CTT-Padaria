@@ -40,6 +40,7 @@ namespace Padaria.Data.Map
 
             builder.HasData(new Usuario
             {
+                Id = 1,
                 Nome = "Thaise",
                 Email = "thaise@gmail.com",
                 DataNascimento = new DateTime(1990, 02, 01),
