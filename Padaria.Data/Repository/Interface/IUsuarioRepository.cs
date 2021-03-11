@@ -7,5 +7,6 @@ namespace Padaria.Data.Repository.Interface
     {
         public List<Usuario> SelecionarPorNome(string nome);
         public Usuario SelecionarPorEmail(string email);
+        public Usuario SelecionarPorNomeESenha(string nome, string senha);
     }
 }
