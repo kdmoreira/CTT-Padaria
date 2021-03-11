@@ -35,7 +35,11 @@ namespace Padaria.Data.Repository.Implementation
 
         public T Alterar(T entity)
         {
-            _contexto.Set<T>().Update(entity);
+            var resposta = Selecionar(entity.Id);
+            if (resposta == null)
+                return null;
+
+            _contexto.Entry(resposta).CurrentValues.SetValues(entity);           
             _contexto.SaveChanges();
 
             return entity;
@@ -45,6 +49,7 @@ namespace Padaria.Data.Repository.Implementation
         {
             _contexto.Set<T>().Remove(entity);
             _contexto.SaveChanges();
-        }        
+        }
+
     }
 }

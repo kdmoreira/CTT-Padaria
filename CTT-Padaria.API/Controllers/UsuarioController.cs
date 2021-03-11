@@ -95,12 +95,11 @@ namespace CTT_Padaria.API.Controllers
         public IActionResult Put([FromBody] Usuario usuario)
         {
             try
-            {
-                var usuarioExiste = _repoUsuario.Selecionar(usuario.Id);
-                if (usuarioExiste == null)
-                    return NoContent();
+            {                
+                var usuarioAlterado = _repoUsuario.Alterar(usuario);
 
-                _repoUsuario.Alterar(usuario);
+                if (usuarioAlterado == null)
+                    return NoContent();
 
                 return Ok("Usuário alterado com sucesso.");
             }
