@@ -128,6 +128,5 @@ namespace CTT_Padaria.API.Controllers
                 return StatusCode(500);
             }
         }
-
     }
 }

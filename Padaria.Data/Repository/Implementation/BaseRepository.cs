@@ -33,7 +33,7 @@ namespace Padaria.Data.Repository.Implementation
             _contexto.SaveChanges();
         }
 
-        public T Alterar(T entity)
+        public virtual T Alterar(T entity)
         {
             var resposta = Selecionar(entity.Id);
             if (resposta == null)

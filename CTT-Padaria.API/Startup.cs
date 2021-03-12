@@ -34,6 +34,7 @@ namespace CTT_Padaria.API
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IMateriaPrimaRepository, MateriaPrimaRepository>();
 
             //configuração Authentication
             var Key = Encoding.ASCII.GetBytes(Configuracoes.Secret);

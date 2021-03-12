@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Padaria.Data.Repository.Interface;
+using Padaria.Domain.Model;
 
 namespace CTT_Padaria.API.Controllers
 {
@@ -44,6 +46,61 @@ namespace CTT_Padaria.API.Controllers
 
                 return Ok(materiaPrima);
 
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] MateriaPrima materiaPrima)
+        {
+            try
+            {
+                // Verificar UnidadeMedida
+                if (string.IsNullOrEmpty(materiaPrima.Nome) || materiaPrima.Quantidade < 0)
+                    return BadRequest("Todos os campos são obrigatórios.");
+
+                if ((int)materiaPrima.UnidadeMedida != 0 && (int)materiaPrima.UnidadeMedida != 1 &&
+                    (int)materiaPrima.UnidadeMedida != 2)
+                    return BadRequest("Não existe esta unidade de medida.");
+
+                var materiaPrimaExiste = _repoMateriaPrima.SelecionarPorNome(materiaPrima.Nome);
+                if (materiaPrimaExiste != null)
+                    return BadRequest("Esta matéria prima já está cadastrada. Atualize, por favor.");
+
+                if (materiaPrima.Quantidade <= 0)
+                    return BadRequest("Por favor, informar uma quantidade maior que zero.");
+
+                _repoMateriaPrima.Incluir(materiaPrima);
+
+                return Created("", "Matéria Prima cadastrada com sucesso.");
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] MateriaPrima materiaPrima)
+        {
+            try
+            {
+                if (materiaPrima.Quantidade <= 0)
+                    return BadRequest("Valores iguais ou menores que zero não permitidos.");
+
+                //var materiaPrimaAlterada = _repoMateriaPrima.Alterar(materiaPrima);
+                
+                //if (materiaPrimaAlterada == null)
+                //    return NoContent();
+
+                var resposta = _repoMateriaPrima.Alterar(materiaPrima);
+                if (resposta == null)
+                    return NoContent();
+                
+                return Ok("Matéria Prima alterada com sucesso.");
             }
             catch (System.Exception)
             {

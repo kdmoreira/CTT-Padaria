@@ -7,11 +7,11 @@ namespace Padaria.Domain.Model
     {
         public int Id { get; set; }
         public string Nome { get; set; }
-        public enum UnidadeMedida { get; set; }
+        public Unidades UnidadeMedida { get; set; }
         public float Quantidade { get; set; }
         public bool Ativa { get; set; }
     }
-    public enum UnidadeMedida
+    public enum Unidades
     { 
         Grama, 
         Mililitro, 
