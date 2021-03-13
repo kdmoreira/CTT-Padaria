@@ -49,5 +49,10 @@ namespace Padaria.Data.Repository.Implementation
             _contexto.SaveChanges();
         }
 
+        public void Dispose()
+        {
+            _contexto.Dispose();
+        }
+
     }
 }

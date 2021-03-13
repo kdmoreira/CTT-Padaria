@@ -22,7 +22,7 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                var produtosMaterias = _repoProdutoMateria.SelecionarTudo();
+                var produtosMaterias = _repoProdutoMateria.SelecionarTudoCompleto();
                 if (produtosMaterias.Count < 1)
                     return NoContent();
 
@@ -43,7 +43,7 @@ namespace CTT_Padaria.API.Controllers
             {  
                 _repoProdutoMateria.Incluir(produtoMateria);
 
-                return Created("","Usuário cadastrado com sucesso.");
+                return Created("","Receita (ProdutoMateria) cadastrada com sucesso.");
             }
             catch (System.Exception)
             {

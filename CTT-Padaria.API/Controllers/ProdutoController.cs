@@ -22,7 +22,7 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                var produtos = _repoProduto.SelecionarTudo();
+                var produtos = _repoProduto.SelecionarTudoCompleto();
                 if (produtos.Count < 1)
                     return NoContent();
 
@@ -40,6 +40,9 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
+                if (produto.Producao == 0 && produto.Quantidade != 0)
+                    return BadRequest("Para produtos de fabricação própria, a quantidade informada deve ser zero.");
+                
                 if (produto.Producao != 0 && (int)produto.Producao != 1)
                     return BadRequest($"Referência {produto.Producao} para produção não existe. Referências aceitas: 0(Próprio), 1(Terceirizado)");
 
@@ -61,7 +64,7 @@ namespace CTT_Padaria.API.Controllers
                 
                 _repoProduto.Incluir(produto);
 
-                return Created("","Usuário cadastrado com sucesso.");
+                return Created("","Produto cadastrado com sucesso.");
             }
             catch (System.Exception)
             {
@@ -73,20 +76,32 @@ namespace CTT_Padaria.API.Controllers
         public IActionResult Put([FromBody] Produto produto)
         {
             try
-            {                
+            {
+                var produtoEncontrado = _repoProduto.Selecionar(produto.Id);
+
+                if (produtoEncontrado.Producao == 0 &&
+                    produto.Quantidade != produtoEncontrado.Quantidade)
+                {
+                    if (_repoProduto.NaoPermiteAbater(produtoEncontrado, produto.Quantidade))
+                        return BadRequest("Matéria prima insuficiente para esta quantidade de produto.");
+                }
+                
+                // Incluir abatimento
                 var produtoAlterado = _repoProduto.Alterar(produto);
 
                 if (produtoAlterado == null)
                     return NoContent();
 
-                return Ok("Usuário alterado com sucesso.");
+                return Ok("Produto alterado com sucesso.");
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return StatusCode(500);
             }
         }
 
+        // Não poderemos deletar produtos
+        /* 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -98,12 +113,12 @@ namespace CTT_Padaria.API.Controllers
 
                 _repoProduto.Excluir(produtoExiste);
 
-                return Ok("Usuário removido com sucesso.");
+                return Ok("Produto removido com sucesso.");
             }
             catch (System.Exception)
             {
                 return StatusCode(500);
             }
-        }
+        } */
     }
 }
