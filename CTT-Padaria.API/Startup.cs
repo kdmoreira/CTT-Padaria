@@ -37,6 +37,8 @@ namespace CTT_Padaria.API
             services.AddScoped<IMateriaPrimaRepository, MateriaPrimaRepository>();
             services.AddScoped<IProdutoMateriaRepository, ProdutoMateriaRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IVendaRepository, VendaRepository>();
+            services.AddScoped<IProdutoVendaRepository, ProdutoVendaRepository>();
 
             //configuração Authentication
             var Key = Encoding.ASCII.GetBytes(Configuracoes.Secret);

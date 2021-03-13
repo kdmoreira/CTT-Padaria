@@ -1,5 +1,6 @@
 ﻿using Padaria.Domain.Interface;
 using System;
+using System.Collections.Generic;
 
 namespace Padaria.Domain.Model
 {
@@ -10,6 +11,7 @@ namespace Padaria.Domain.Model
         public string Email { get; set; }
         public DateTime? DataNascimento { get; set; }
         public string Perfil { get; set; }
-        public string Senha { get; set; }        
+        public string Senha { get; set; }  
+        public List<ProdutoVenda> ProdutosVendas { get; set; }
     }
 }

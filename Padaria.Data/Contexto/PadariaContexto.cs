@@ -11,6 +11,8 @@ namespace Padaria.Data.Contexto
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<MateriaPrima> MateriasPrimas { get; set; }
         public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Venda> Vendas { get; set; }
+        public DbSet<ProdutoVenda> ProdutosVendas { get; set; }
         public DbSet<ProdutoMateria> ProdutosMaterias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,6 +20,8 @@ namespace Padaria.Data.Contexto
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new MateriaPrimaMap());
             modelBuilder.ApplyConfiguration(new ProdutoMap());
+            modelBuilder.ApplyConfiguration(new VendaMap());
+            modelBuilder.ApplyConfiguration(new ProdutoVendaMap());
             modelBuilder.ApplyConfiguration(new ProdutoMateriaMap());
 
             base.OnModelCreating(modelBuilder);
