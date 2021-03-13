@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Padaria.Domain.Model;
-using System;
 
 namespace Padaria.Data.Map
 {
@@ -17,7 +16,7 @@ namespace Padaria.Data.Map
                 .HasColumnType("varchar(150)")
                 .IsRequired();
 
-            builder.Property(x => x.UnidadeMedida)
+            builder.Property(x => x.UnidadeDeMedida)
                 .HasColumnType("int")
                 .IsRequired();
 

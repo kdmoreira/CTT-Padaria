@@ -1,10 +1,7 @@
 ﻿using Padaria.Data.Contexto;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Padaria.Data.Repository.Implementation
 {
@@ -15,18 +12,14 @@ namespace Padaria.Data.Repository.Implementation
         public override MateriaPrima Alterar(MateriaPrima materiaPrima)
         {
             var materiaPrimaEncontrada = Selecionar(materiaPrima.Id);
+
             if (materiaPrimaEncontrada == null)
                 return null;
 
-            //float novaQuantidade = materiaPrimaEncontrada.Quantidade + materiaPrima.Quantidade;
-
             if (materiaPrima.Quantidade > 0)
             {
-                //_contexto.Entry(materiaPrimaEncontrada).CurrentValues.SetValues(materiaPrima);
-                //materiaPrimaEncontrada.Quantidade = novaQuantidade;
                 materiaPrima.Quantidade += materiaPrimaEncontrada.Quantidade;
-                _contexto.Entry(materiaPrimaEncontrada).CurrentValues.SetValues(materiaPrima);
-                //_contexto.Entry(materiaPrimaEncontrada.Quantidade).Property("Quantidade").IsModified = true;
+                _contexto.Entry(materiaPrimaEncontrada).CurrentValues.SetValues(materiaPrima);               
                 _contexto.SaveChanges();
             }
 
@@ -63,7 +56,7 @@ namespace Padaria.Data.Repository.Implementation
 
         public MateriaPrima SelecionarPorNome(string nome)
         {
-            return _contexto.MateriaPrima.FirstOrDefault(x => x.Nome.Equals(nome));
+            return _contexto.MateriasPrimas.FirstOrDefault(x => x.Nome.Equals(nome));
         }
     }
 }

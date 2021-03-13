@@ -5,8 +5,8 @@ namespace Padaria.Data.Repository.Interface
 {
     public interface IUsuarioRepository : IBaseRepository<Usuario>
     {
-        public List<Usuario> SelecionarPorNome(string nome);
-        public Usuario SelecionarPorEmail(string email);
-        public Usuario SelecionarPorNomeESenha(string nome, string senha);
+        List<Usuario> SelecionarPorNome(string nome);
+        Usuario SelecionarPorEmail(string email);
+        Usuario SelecionarPorNomeESenha(string nome, string senha);
     }
 }

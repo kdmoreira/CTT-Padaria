@@ -27,7 +27,6 @@ namespace CTT_Padaria.API.Controllers
                     return NoContent();
 
                 return Ok(materiasPrimas);
-
             }
             catch (System.Exception)
             {
@@ -62,9 +61,10 @@ namespace CTT_Padaria.API.Controllers
                 if (string.IsNullOrEmpty(materiaPrima.Nome) || materiaPrima.Quantidade < 0)
                     return BadRequest("Todos os campos são obrigatórios.");
 
-                if ((int)materiaPrima.UnidadeMedida != 0 && (int)materiaPrima.UnidadeMedida != 1 &&
-                    (int)materiaPrima.UnidadeMedida != 2)
-                    return BadRequest("Não existe esta unidade de medida.");
+                if (materiaPrima.UnidadeDeMedida != 0 &&
+                    (int)materiaPrima.UnidadeDeMedida != 1 && 
+                    (int)materiaPrima.UnidadeDeMedida != 2)
+                    return BadRequest($"Referência {materiaPrima.UnidadeDeMedida} para Unidade de Medida não existe. Referências aceitas: 0(Grama), 1(Mililitro) e 2(Unidade)");
 
                 var materiaPrimaExiste = _repoMateriaPrima.SelecionarPorNome(materiaPrima.Nome);
                 if (materiaPrimaExiste != null)
@@ -91,12 +91,13 @@ namespace CTT_Padaria.API.Controllers
                 if (materiaPrima.Quantidade <= 0)
                     return BadRequest("Valores iguais ou menores que zero não permitidos.");
 
-                //var materiaPrimaAlterada = _repoMateriaPrima.Alterar(materiaPrima);
-                
-                //if (materiaPrimaAlterada == null)
-                //    return NoContent();
+                if (materiaPrima.UnidadeDeMedida != 0 &&
+                    (int)materiaPrima.UnidadeDeMedida != 1 &&
+                    (int)materiaPrima.UnidadeDeMedida != 2)
+                    return BadRequest($"Referência {materiaPrima.UnidadeDeMedida} para Unidade de Medida não existe. Referências aceitas: 0(Grama), 1(Mililitro) e 2(Unidade)");
 
                 var resposta = _repoMateriaPrima.Alterar(materiaPrima);
+
                 if (resposta == null)
                     return NoContent();
                 

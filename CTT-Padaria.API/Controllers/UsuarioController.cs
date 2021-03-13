@@ -76,8 +76,11 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                if(string.IsNullOrEmpty(usuario.Nome) || string.IsNullOrEmpty(usuario.Email) || string.IsNullOrEmpty(usuario.Perfil) 
-                    || string.IsNullOrEmpty(usuario.Senha) ||  usuario.DataNascimento == null)
+                if(string.IsNullOrEmpty(usuario.Nome) || 
+                    string.IsNullOrEmpty(usuario.Email) || 
+                    string.IsNullOrEmpty(usuario.Perfil) || 
+                    string.IsNullOrEmpty(usuario.Senha) ||  
+                    usuario.DataNascimento == null)
                 {
                     return BadRequest("Todos os campos são obrigatórios.");
                 }

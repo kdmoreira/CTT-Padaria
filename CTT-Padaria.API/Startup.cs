@@ -27,7 +27,7 @@ namespace CTT_Padaria.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PadariaContexto>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionKarina")));
+                options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
 
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
@@ -35,6 +35,8 @@ namespace CTT_Padaria.API
 
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IMateriaPrimaRepository, MateriaPrimaRepository>();
+            services.AddScoped<IProdutoMateriaRepository, ProdutoMateriaRepository>();
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
             //configuração Authentication
             var Key = Encoding.ASCII.GetBytes(Configuracoes.Secret);
