@@ -19,6 +19,10 @@ namespace Padaria.Data.Map
             builder.HasOne<MateriaPrima>(pm => pm.MateriaPrima)
                 .WithMany(m => m.ProdutosMaterias)
                 .HasForeignKey(pm => pm.MateriaPrimaId);
+
+            builder.Property("Quantidade").HasColumnType("float").IsRequired();
+
+            builder.Property("Porcao").HasColumnType("int").IsRequired();
         }
     }
 }
