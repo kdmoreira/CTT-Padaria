@@ -7,7 +7,7 @@ namespace CTT_Padaria.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    //[Authorize(Roles = "Administrador,Estoquista,Padeiro")]
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _repoProduto;
@@ -18,13 +18,24 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(bool ativo, string nome)
         {
             try
             {
-                var produtos = _repoProduto.SelecionarTudoCompleto();
+                var produtos = _repoProduto.SelecionarTudo();
                 if (produtos.Count < 1)
                     return NoContent();
+
+                // Produtos chegam com ativo == false por default caso não seja informado
+                // no parâmetro (arrumar)
+                if (nome != null && ativo == true)
+                    return Ok(_repoProduto.SelecionarPorNome(nome));
+
+                if (ativo == false && nome != null)
+                    return Ok(_repoProduto.SelecionarInativosPorNome(nome));
+
+                if (ativo == false)
+                    return Ok(_repoProduto.SelecionarInativos());
 
                 return Ok(produtos);
 
@@ -53,7 +64,7 @@ namespace CTT_Padaria.API.Controllers
                         (int)produto.UnidadeDeMedida != 2)
                         return BadRequest($"Referência {produto.UnidadeDeMedida} para Unidade de Medida não existe. Referências aceitas: 0(Grama), 1(Mililitro) e 2(Unidade)");
 
-                    var produtoExiste = _repoProduto.SelecionarPorNome(produto.Nome);
+                    var produtoExiste = _repoProduto.SelecionarProdutoPorNome(produto.Nome);
 
                     if (produtoExiste != null)
                         return BadRequest("Este produto já está cadastrado. Atualize, por favor.");
@@ -78,21 +89,20 @@ namespace CTT_Padaria.API.Controllers
             try
             {
                 var produtoEncontrado = _repoProduto.Selecionar(produto.Id);
-
-                if (produtoEncontrado.Producao == 0 &&
-                    produto.Quantidade != produtoEncontrado.Quantidade)
-                {
-                    if (_repoProduto.NaoPermiteAbater(produtoEncontrado, produto.Quantidade))
-                        return BadRequest("Matéria prima insuficiente para esta quantidade de produto.");
-                }
-                
-                // Incluir abatimento
-                var produtoAlterado = _repoProduto.Alterar(produto);
-
-                if (produtoAlterado == null)
+                if (produtoEncontrado == null)
                     return NoContent();
 
+                if (produtoEncontrado.Producao == 0 &&
+                    produto.Quantidade > produtoEncontrado.Quantidade)
+                {
+                    var producao = _repoProduto.Produzir(produtoEncontrado, produto.Quantidade);
+                    if (producao == null)
+                        return BadRequest("Matéria prima insuficiente para esta quantidade de produto.");
+                }
+
+                var produtoAlterado = _repoProduto.Alterar(produto);
                 return Ok("Produto alterado com sucesso.");
+
             }
             catch (System.Exception ex)
             {

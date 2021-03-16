@@ -10,5 +10,6 @@ namespace Padaria.Domain.Model
         public int MateriaPrimaId { get; set; }
         public MateriaPrima MateriaPrima { get; set; }
         public float Quantidade { get; set; }
+        public int Porcao { get; set; }
     }
 }

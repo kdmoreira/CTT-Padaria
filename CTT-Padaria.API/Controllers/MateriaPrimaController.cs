@@ -7,7 +7,7 @@ namespace CTT_Padaria.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    //[Authorize(Roles = "Administrador, estoquista")]
+    //[Authorize(Roles = "Administrador,Estoquista")]
     public class MateriaPrimaController : ControllerBase
     {
         private readonly IMateriaPrimaRepository _repoMateriaPrima;
@@ -18,13 +18,23 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] bool ativa, string nome)
         {
             try
             {
                 var materiasPrimas = _repoMateriaPrima.SelecionarTudo();
                 if (materiasPrimas.Count < 1)
                     return NoContent();
+
+                // Mesmo problema que ocorre em Produtos (GET), arrumar de acordo
+                if (ativa == false && nome != null)
+                    return Ok(_repoMateriaPrima.SelecionarInativasPorNome(nome));
+
+                if (ativa == false)
+                    return Ok(_repoMateriaPrima.SelecionarInativas());
+
+                if (nome != null)
+                    return Ok(_repoMateriaPrima.SelecionarPorNome(nome));
 
                 return Ok(materiasPrimas);
             }
@@ -57,7 +67,6 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                // Verificar UnidadeMedida
                 if (string.IsNullOrEmpty(materiaPrima.Nome) || materiaPrima.Quantidade < 0)
                     return BadRequest("Todos os campos são obrigatórios.");
 
@@ -100,7 +109,11 @@ namespace CTT_Padaria.API.Controllers
 
                 if (resposta == null)
                     return NoContent();
-                
+
+                var retorno = _repoMateriaPrima.ValidarInativacao(materiaPrima);
+                if (retorno == null)
+                    return BadRequest("Esta matéria prima está vinculada a um produto ativo.");
+
                 return Ok("Matéria Prima alterada com sucesso.");
             }
             catch (System.Exception)

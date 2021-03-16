@@ -19,10 +19,12 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] string nome, string email)
         {
             try
             {
+                // Incluir condições para params
+               
                 var usuarios = _repoUsuario.SelecionarTudo();
                 if (usuarios.Count < 1)
                     return NoContent();

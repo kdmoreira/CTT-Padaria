@@ -3,6 +3,7 @@ using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Interface;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Padaria.Data.Repository.Implementation
 {
@@ -36,6 +37,13 @@ namespace Padaria.Data.Repository.Implementation
             var resposta = Selecionar(entity.Id);
             if (resposta == null)
                 return null;
+
+            /* foreach (PropertyInfo propertyInfo in entity.GetType().GetProperties())
+            {
+                if (propertyInfo != null)
+                    _contexto.Entry(??).CurrentValues
+                    .SetValues(propertyInfo);
+            } */
 
             _contexto.Entry(resposta).CurrentValues.SetValues(entity);           
             _contexto.SaveChanges();

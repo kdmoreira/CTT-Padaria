@@ -14,13 +14,9 @@ namespace Padaria.Data.Repository.Implementation
         public List<ProdutoMateria> SelecionarTudoCompleto()
         {
             return _contexto.ProdutosMaterias
-                .Include(x => x.Produto).Include(x => x.MateriaPrima).ToList();
+                .Include(x => x.Produto)
+                .Include(x => x.MateriaPrima)
+                .ToList();
         }
-
-        //public IQueryable<ProdutoMateria> SelecionarProdutoMateria(int id)
-        //{
-        //    return _contexto.ProdutosMaterias.Where(x => x.ProdutoId.Equals(id));
-        //}
-
     }
 }

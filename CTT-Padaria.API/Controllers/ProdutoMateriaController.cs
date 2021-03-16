@@ -7,7 +7,7 @@ namespace CTT_Padaria.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    //[Authorize(Roles = "Administrador,Estoquista,Padeiro")]
     public class ProdutoMateriaController : ControllerBase
     {
         private readonly IProdutoMateriaRepository _repoProdutoMateria;
