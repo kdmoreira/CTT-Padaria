@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Padaria.Data.Repository.Interface
 {
-    public interface IVendaRepository : IBaseRepository<Venda>
+    public interface IComandaRepository : IBaseRepository<Comanda>
     {
-        Venda SelecionarComandaId(int id);
+        
     }
 }

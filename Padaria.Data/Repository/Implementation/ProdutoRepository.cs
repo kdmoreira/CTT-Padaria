@@ -13,5 +13,6 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Produtos.FirstOrDefault(x => x.Nome.Equals(nome));
         }
+        
     }
 }

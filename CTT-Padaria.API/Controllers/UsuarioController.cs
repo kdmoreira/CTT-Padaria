@@ -19,51 +19,21 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] string nome, string email)
         {
             try
-            {
-                var usuarios = _repoUsuario.SelecionarTudo();
-                if (usuarios.Count < 1)
-                    return NoContent();
+            { 
+                if (nome != null && email != null)
+                   return Ok(_repoUsuario.SelecionarPorNomeEmail(nome, email));
 
-                return Ok(usuarios);
+                if (nome != null)
+                    return Ok(_repoUsuario.SelecionarPorNome(nome));
 
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(500);
-            }
-        }
+                if (email != null)
+                    return Ok(_repoUsuario.SelecionarPorEmail(email));
+                
+                return Ok(_repoUsuario.SelecionarTudo());
 
-        [HttpGet("nome/{nome}")]
-        public IActionResult GetByName(string nome)
-        {
-            try
-            {
-                var usuarios = _repoUsuario.SelecionarPorNome(nome);
-                if (usuarios.Count < 1)
-                    return BadRequest("Não existem usuários com esse nome.");
-
-                return Ok(usuarios);
-
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(500);
-            }
-        }
-
-        [HttpGet("email/{email}")]
-        public IActionResult GetByEmail(string email)
-        {
-            try
-            {
-                var usuario = _repoUsuario.SelecionarPorEmail(email);
-                if (usuario == null)
-                    return BadRequest("Não existe usuário com esse email.");
-
-                return Ok(usuario);
             }
             catch (System.Exception)
             {

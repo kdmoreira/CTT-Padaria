@@ -20,7 +20,7 @@ namespace Padaria.Data.Repository.Implementation
             return _contexto.Set<T>().ToList();
         }
 
-        public T Selecionar(int id)
+        public virtual T Selecionar(int id)
         {
             return _contexto.Set<T>().FirstOrDefault(x => x.Id.Equals(id));
         }

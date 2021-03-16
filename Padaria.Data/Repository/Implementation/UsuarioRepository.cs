@@ -10,6 +10,7 @@ namespace Padaria.Data.Repository.Implementation
     {
         public UsuarioRepository(PadariaContexto contexto) : base(contexto) { }
 
+
         public override List<Usuario> SelecionarTudo()
         {
             return _contexto.Usuarios
@@ -26,12 +27,18 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Usuarios
                                .Where(x => x.Nome.Contains(nome))
+                               .OrderBy(u => u.Nome)
                                .ToList();
         }
 
         public Usuario SelecionarPorNomeESenha(string nome, string senha)
         {
             return _contexto.Usuarios.FirstOrDefault(u => u.Nome == nome && u.Senha == senha);
+        }
+
+        public Usuario SelecionarPorNomeEmail(string nome, string email)
+        {
+            return _contexto.Usuarios.FirstOrDefault(u => u.Nome.Equals(nome) && u.Email.Equals(email));
         }
     }
 }

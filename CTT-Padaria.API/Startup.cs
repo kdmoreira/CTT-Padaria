@@ -33,12 +33,14 @@ namespace CTT_Padaria.API
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<ICaixaRepository, CaixaRepository>();
+            services.AddScoped<IComandaRepository, ComandaRepository>();
             services.AddScoped<IMateriaPrimaRepository, MateriaPrimaRepository>();
-            services.AddScoped<IProdutoMateriaRepository, ProdutoMateriaRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IProdutoComandaRepository, ProdutoComandaRepository>();
+            services.AddScoped<IProdutoMateriaRepository, ProdutoMateriaRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IVendaRepository, VendaRepository>();
-            services.AddScoped<IProdutoVendaRepository, ProdutoVendaRepository>();
 
             //configuração Authentication
             var Key = Encoding.ASCII.GetBytes(Configuracoes.Secret);

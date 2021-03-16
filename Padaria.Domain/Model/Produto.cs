@@ -14,7 +14,7 @@ namespace Padaria.Domain.Model
         public float Quantidade { get; set; }
         public bool Ativo { get; set; }
         public List<ProdutoMateria> ProdutosMaterias { get; set; }
-        public List<ProdutoVenda> ProdutosVendas { get; set; }
+        public List<ProdutoComanda> ProdutosComanda { get; set; }
     }   
 }
 

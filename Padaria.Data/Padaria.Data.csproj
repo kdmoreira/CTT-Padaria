@@ -9,6 +9,22 @@
     <Compile Remove="Migrations\20210312184145_add-migration materiaPrima.Designer.cs" />
     <Compile Remove="Migrations\20210312184219_materiaPrima.cs" />
     <Compile Remove="Migrations\20210312184219_materiaPrima.Designer.cs" />
+    <Compile Remove="Migrations\20210314195520_Venda-ProdutoVenda.cs" />
+    <Compile Remove="Migrations\20210314195520_Venda-ProdutoVenda.Designer.cs" />
+    <Compile Remove="Migrations\20210314213159_Venda-ProdutoVenda.cs" />
+    <Compile Remove="Migrations\20210314213159_Venda-ProdutoVenda.Designer.cs" />
+    <Compile Remove="Migrations\20210314213551_venda-produtoVenda.cs" />
+    <Compile Remove="Migrations\20210314213551_venda-produtoVenda.Designer.cs" />
+    <Compile Remove="Migrations\20210315134753_Comanda-ProdutoComanda-Venda.cs" />
+    <Compile Remove="Migrations\20210315134753_Comanda-ProdutoComanda-Venda.Designer.cs" />
+    <Compile Remove="Migrations\20210315140148_Comanda-ProdutoComanda-Venda.cs" />
+    <Compile Remove="Migrations\20210315140148_Comanda-ProdutoComanda-Venda.Designer.cs" />
+    <Compile Remove="Migrations\20210315160425_Caixa.cs" />
+    <Compile Remove="Migrations\20210315160425_Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210315161355_Caixa.cs" />
+    <Compile Remove="Migrations\20210315161355_Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210315162556_Comanda-ProdutoComanda-Venda-caixa.cs" />
+    <Compile Remove="Migrations\20210315162556_Comanda-ProdutoComanda-Venda-caixa.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
