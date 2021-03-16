@@ -75,7 +75,7 @@ namespace CTT_Padaria.API.Controllers
                     return BadRequest($"Referência {materiaPrima.UnidadeDeMedida} para Unidade de Medida não existe. Referências aceitas: 0(Grama), 1(Mililitro) e 2(Unidade)");
 
                 var materiaPrimaExiste = _repoMateriaPrima.SelecionarPorNome(materiaPrima.Nome);
-                if (materiaPrimaExiste != null)
+                if (materiaPrimaExiste.Count > 0)
                     return BadRequest("Esta matéria prima já está cadastrada. Atualize, por favor.");
 
                 if (materiaPrima.Quantidade <= 0)

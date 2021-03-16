@@ -43,7 +43,7 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id, [FromQuery] DateTime data)
+        public IActionResult GetById([FromQuery] DateTime data, int id)
         {
             try
             {

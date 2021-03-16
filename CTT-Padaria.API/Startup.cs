@@ -30,7 +30,7 @@ namespace CTT_Padaria.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PadariaContexto>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionKarina")));
+                options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
 
             services.AddControllers()
                 .AddNewtonsoftJson(options =>

@@ -56,6 +56,8 @@ namespace Padaria.Data.Repository.Implementation
         public Produto Produzir(Produto produtoEncontrado, float quantidade)
         {
             var receita = _contexto.ProdutosMaterias.Where(x => x.ProdutoId.Equals(produtoEncontrado.Id)).ToList();
+            if (receita.Count <= 0)
+                return null;
 
             float diferenca = quantidade - produtoEncontrado.Quantidade;
             List<float> quantidadesProporcionais = new List<float>();

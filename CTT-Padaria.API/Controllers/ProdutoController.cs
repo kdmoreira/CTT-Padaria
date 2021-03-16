@@ -98,11 +98,12 @@ namespace CTT_Padaria.API.Controllers
                         return BadRequest("Matéria prima insuficiente para esta quantidade de produto.");
                 }
 
+                produto.Quantidade += produtoEncontrado.Quantidade;
                 var produtoAlterado = _repoProduto.Alterar(produto);
                 return Ok("Produto alterado com sucesso.");
 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return StatusCode(500);
             }
