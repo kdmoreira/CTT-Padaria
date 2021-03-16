@@ -7,7 +7,7 @@ namespace CTT_Padaria.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    //[Authorize(Roles = "Administrador,Estoquista,Padeiro")]
     public class ProdutoMateriaController : ControllerBase
     {
         private readonly IProdutoMateriaRepository _repoProdutoMateria;
@@ -22,7 +22,7 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                var produtosMaterias = _repoProdutoMateria.SelecionarTudo();
+                var produtosMaterias = _repoProdutoMateria.SelecionarTudoCompleto();
                 if (produtosMaterias.Count < 1)
                     return NoContent();
 
@@ -43,7 +43,7 @@ namespace CTT_Padaria.API.Controllers
             {  
                 _repoProdutoMateria.Incluir(produtoMateria);
 
-                return Created("","Usuário cadastrado com sucesso.");
+                return Created("","Receita (ProdutoMateria) cadastrada com sucesso.");
             }
             catch (System.Exception)
             {

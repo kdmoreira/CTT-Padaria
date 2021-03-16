@@ -7,7 +7,7 @@ namespace CTT_Padaria.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    //[Authorize(Roles = "Administrador, estoquista")]
+    //[Authorize(Roles = "Administrador,Estoquista")]
     public class MateriaPrimaController : ControllerBase
     {
         private readonly IMateriaPrimaRepository _repoMateriaPrima;
@@ -18,13 +18,22 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] bool inativas, string nome)
         {
             try
             {
                 var materiasPrimas = _repoMateriaPrima.SelecionarTudo();
                 if (materiasPrimas.Count < 1)
                     return NoContent();
+
+                if (inativas == false && nome != null)
+                    return Ok(_repoMateriaPrima.SelecionarPorNome(nome));
+
+                if (inativas == true && nome != null)
+                    return Ok(_repoMateriaPrima.SelecionarInativasPorNome(nome));
+
+                if (inativas == true)
+                    return Ok(_repoMateriaPrima.SelecionarInativas());
 
                 return Ok(materiasPrimas);
             }
@@ -57,7 +66,6 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                // Verificar UnidadeMedida
                 if (string.IsNullOrEmpty(materiaPrima.Nome) || materiaPrima.Quantidade < 0)
                     return BadRequest("Todos os campos são obrigatórios.");
 
@@ -96,11 +104,16 @@ namespace CTT_Padaria.API.Controllers
                     (int)materiaPrima.UnidadeDeMedida != 2)
                     return BadRequest($"Referência {materiaPrima.UnidadeDeMedida} para Unidade de Medida não existe. Referências aceitas: 0(Grama), 1(Mililitro) e 2(Unidade)");
 
-                var resposta = _repoMateriaPrima.Alterar(materiaPrima);
-
-                if (resposta == null)
+                var materiaPrimaEncontrada = _repoMateriaPrima.Selecionar(materiaPrima.Id);
+                if (materiaPrimaEncontrada == null)
                     return NoContent();
-                
+
+                var retorno = _repoMateriaPrima.ValidarInativacao(materiaPrima);
+                if (retorno == null)
+                    return BadRequest("Esta matéria prima está vinculada a um produto ativo.");
+
+                _repoMateriaPrima.AlterarMateriaPrima(materiaPrima);
+
                 return Ok("Matéria Prima alterada com sucesso.");
             }
             catch (System.Exception)

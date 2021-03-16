@@ -1,6 +1,7 @@
 ﻿using Padaria.Data.Contexto;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Padaria.Data.Repository.Implementation
@@ -9,7 +10,41 @@ namespace Padaria.Data.Repository.Implementation
     {
         public MateriaPrimaRepository(PadariaContexto contexto) : base(contexto) { }
 
-        public override MateriaPrima Alterar(MateriaPrima materiaPrima)
+        public List<MateriaPrima> SelecionarPorNome(string nome)
+        {
+            return _contexto.MateriasPrimas.Where(x => x.Nome.Contains(nome) && x.Ativa == true).ToList();
+        }
+
+        public List<MateriaPrima> SelecionarInativas()
+        {
+            return _contexto.MateriasPrimas
+                .OrderBy(x => x.Nome)
+                .ToList();
+        }
+
+        public List<MateriaPrima> SelecionarInativasPorNome(string nome)
+        {
+            return _contexto.MateriasPrimas
+                .Where(x => x.Nome.Contains(nome))
+                .OrderBy(x => x.Nome)
+                .ToList();
+        }
+
+        public MateriaPrima SelecionarMateriaPrimaPorNome(string nome)
+        {
+            return _contexto.MateriasPrimas
+                .FirstOrDefault(x => x.Nome.Equals(nome));
+        }
+
+        public override List<MateriaPrima> SelecionarTudo()
+        {
+            return _contexto.MateriasPrimas
+                .Where(x => x.Ativa == true)
+                .OrderBy(x => x.Nome)
+                .ToList();
+        }
+
+        public MateriaPrima AlterarMateriaPrima(MateriaPrima materiaPrima)
         {
             var materiaPrimaEncontrada = Selecionar(materiaPrima.Id);
 
@@ -26,37 +61,26 @@ namespace Padaria.Data.Repository.Implementation
             return materiaPrima;
         }
 
-        // Métodos relacionados à gestão de produtos finais
-        // Possível alteração para parâmetros mais adequados
-        public bool PermiteAbater(float qtdAbater, MateriaPrima materiaPrima)
-        {
-            float qtdResultante = materiaPrima.Quantidade - qtdAbater;
-            
-            if (qtdResultante < 0)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        // Possível alteração para parâmetros mais adequados e outras regras de abatimento
-        public void Abater(float qtdAbater, MateriaPrima materiaPrima)
+        public MateriaPrima ValidarInativacao(MateriaPrima materiaPrima)
         {
             var materiaPrimaEncontrada = Selecionar(materiaPrima.Id);
 
-            if (PermiteAbater(qtdAbater, materiaPrima))
+            // Impedir que a matéria prima seja desativada se estiver ligada a um produto final ativo
+            if (materiaPrima.Ativa == false && materiaPrimaEncontrada.Ativa == true)
             {
-                float novaQuantidade = materiaPrima.Quantidade - qtdAbater;
-                
-                _contexto.Entry(materiaPrimaEncontrada.Quantidade).CurrentValues
-                    .SetValues(novaQuantidade);
-                _contexto.SaveChanges();
-            }
-        }
+                var receita = _contexto.ProdutosMaterias.Where(x => x.MateriaPrimaId.Equals(materiaPrimaEncontrada.Id)).ToList();
 
-        public MateriaPrima SelecionarPorNome(string nome)
-        {
-            return _contexto.MateriasPrimas.FirstOrDefault(x => x.Nome.Equals(nome));
+                foreach (ProdutoMateria pm in receita)
+                {
+                    var produtoEncontrado = _contexto.Produtos.FirstOrDefault(x => x.Id.Equals(pm.ProdutoId));
+
+                    if (produtoEncontrado.Ativo == true)
+                    {
+                        return null;
+                    }
+                }
+            }
+            return materiaPrima;
         }
     }
 }

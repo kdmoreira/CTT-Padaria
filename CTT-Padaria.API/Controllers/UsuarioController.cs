@@ -19,7 +19,7 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] string nome, string email)
+        public IActionResult Get()
         {
             try
             { 

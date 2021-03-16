@@ -5,6 +5,16 @@ namespace Padaria.Data.Repository.Interface
 {
     public interface IProdutoRepository : IBaseRepository<Produto>
     {
-        Produto SelecionarPorNome(string nome);
+        List<Produto> SelecionarPorNome(string nome);
+
+        Produto SelecionarProdutoPorNome(string nome);
+
+        List<Produto> SelecionarTudoCompleto();
+
+        Produto Produzir(Produto produtoEncontrado, float quantidade);
+
+        List<Produto> SelecionarInativos();
+
+        List<Produto> SelecionarInativosPorNome(string nome);
     }
 }

@@ -12,7 +12,7 @@ namespace Padaria.Domain.Model
         public TipoDeProdutoEnum Producao { get; set; }
         public float Valor { get; set; }
         public float Quantidade { get; set; }
-        public bool Ativo { get; set; }
+        public bool Ativo { get; set; } = true;
         public List<ProdutoMateria> ProdutosMaterias { get; set; }
         public List<ProdutoComanda> ProdutosComanda { get; set; }
     }   
