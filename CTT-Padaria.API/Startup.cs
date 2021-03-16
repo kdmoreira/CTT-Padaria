@@ -38,7 +38,19 @@ namespace CTT_Padaria.API
             
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "The New Bakery", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                { 
+                    Version = "v1",
+                    Title = "The New Bakery",
+                    Description = "Projeto Final - Sistema para uma Padaria | Grupo 2 (Bruno, Gilvaneide, Jéssica, Karina)",
+                    TermsOfService = new Uri("https://github.com/kdmoreira/CTT-Padaria"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Bruno, Gilvaneide, Jéssica, Karina",
+                        Email = string.Empty,
+                        Url = new Uri("https://github.com/kdmoreira/CTT-Padaria")
+                    }
+                });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);

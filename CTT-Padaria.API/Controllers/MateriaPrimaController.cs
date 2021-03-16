@@ -18,7 +18,7 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] bool ativa, string nome)
+        public IActionResult Get([FromQuery] bool inativas, string nome)
         {
             try
             {
@@ -26,15 +26,14 @@ namespace CTT_Padaria.API.Controllers
                 if (materiasPrimas.Count < 1)
                     return NoContent();
 
-                // Mesmo problema que ocorre em Produtos (GET), arrumar de acordo
-                if (ativa == false && nome != null)
+                if (inativas == false && nome != null)
+                    return Ok(_repoMateriaPrima.SelecionarPorNome(nome));
+
+                if (inativas == true && nome != null)
                     return Ok(_repoMateriaPrima.SelecionarInativasPorNome(nome));
 
-                if (ativa == false)
+                if (inativas == true)
                     return Ok(_repoMateriaPrima.SelecionarInativas());
-
-                if (nome != null)
-                    return Ok(_repoMateriaPrima.SelecionarPorNome(nome));
 
                 return Ok(materiasPrimas);
             }
@@ -105,14 +104,15 @@ namespace CTT_Padaria.API.Controllers
                     (int)materiaPrima.UnidadeDeMedida != 2)
                     return BadRequest($"Referência {materiaPrima.UnidadeDeMedida} para Unidade de Medida não existe. Referências aceitas: 0(Grama), 1(Mililitro) e 2(Unidade)");
 
-                var resposta = _repoMateriaPrima.Alterar(materiaPrima);
-
-                if (resposta == null)
+                var materiaPrimaEncontrada = _repoMateriaPrima.Selecionar(materiaPrima.Id);
+                if (materiaPrimaEncontrada == null)
                     return NoContent();
 
                 var retorno = _repoMateriaPrima.ValidarInativacao(materiaPrima);
                 if (retorno == null)
                     return BadRequest("Esta matéria prima está vinculada a um produto ativo.");
+
+                _repoMateriaPrima.AlterarMateriaPrima(materiaPrima);
 
                 return Ok("Matéria Prima alterada com sucesso.");
             }

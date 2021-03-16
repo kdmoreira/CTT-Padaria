@@ -18,7 +18,7 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(bool ativo, string nome)
+        public IActionResult Get([FromQuery]bool inativos, string nome)
         {
             try
             {
@@ -26,15 +26,13 @@ namespace CTT_Padaria.API.Controllers
                 if (produtos.Count < 1)
                     return NoContent();
 
-                // Produtos chegam com ativo == false por default caso não seja informado
-                // no parâmetro (arrumar)
-                if (nome != null && ativo == true)
+                if (inativos == false && nome != null)
                     return Ok(_repoProduto.SelecionarPorNome(nome));
 
-                if (ativo == false && nome != null)
+                if (inativos == true && nome != null)
                     return Ok(_repoProduto.SelecionarInativosPorNome(nome));
 
-                if (ativo == false)
+                if (inativos == true)
                     return Ok(_repoProduto.SelecionarInativos());
 
                 return Ok(produtos);

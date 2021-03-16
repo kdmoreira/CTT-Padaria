@@ -11,6 +11,8 @@ namespace Padaria.Data.Repository.Interface
 
         MateriaPrima ValidarInativacao(MateriaPrima materiaPrima);
 
+        MateriaPrima AlterarMateriaPrima(MateriaPrima materiaPrima);
+        
         List<MateriaPrima> SelecionarInativas();
 
         List<MateriaPrima> SelecionarInativasPorNome(string nome);

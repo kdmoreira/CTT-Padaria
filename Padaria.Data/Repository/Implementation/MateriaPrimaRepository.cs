@@ -44,7 +44,7 @@ namespace Padaria.Data.Repository.Implementation
                 .ToList();
         }
 
-        public override MateriaPrima Alterar(MateriaPrima materiaPrima)
+        public MateriaPrima AlterarMateriaPrima(MateriaPrima materiaPrima)
         {
             var materiaPrimaEncontrada = Selecionar(materiaPrima.Id);
 
