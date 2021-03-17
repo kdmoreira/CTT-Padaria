@@ -3,6 +3,7 @@ using CTT_Padaria.API.Dto;
 using Padaria.Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,7 +32,20 @@ namespace CTT_Padaria.API.Helpers
                     Materia = m.MateriaPrima.Nome,
                     Quantidade = m.Quantidade,
                     Porcao = m.Porcao
-                })));  
+                })));
+
+            CreateMap<Comanda, ComandaDto>()
+                .ForMember(dest => dest.Comanda, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.DataEntrada.ToString(CultureInfo.CreateSpecificCulture("es-ES"))))
+                .ForMember(dest => dest.ValorTotal, opt => opt.MapFrom(src => src.ProdutosComanda.Sum(c => c.PrecoTotal)))
+                .ForMember(dest => dest.Produtos, opt => opt.MapFrom(src => src.ProdutosComanda
+                .Select(m => new ProdutosComandaDto
+                {
+                    Produto = m.Produto.Nome,
+                    Quantidade = m.Quantidade,
+                    ValorUnitario = (decimal)m.Produto.Valor,
+                    Valor = m.PrecoTotal
+                }))); 
         }
     }
 }
