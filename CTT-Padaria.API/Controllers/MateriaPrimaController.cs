@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
+using System.Collections.Generic;
 
 namespace CTT_Padaria.API.Controllers
 {
@@ -11,10 +14,12 @@ namespace CTT_Padaria.API.Controllers
     public class MateriaPrimaController : ControllerBase
     {
         private readonly IMateriaPrimaRepository _repoMateriaPrima;
+        private readonly IMapper _mapper;
 
-        public MateriaPrimaController(IMateriaPrimaRepository repoMateriaPrima)
+        public MateriaPrimaController(IMateriaPrimaRepository repoMateriaPrima, IMapper mapper)
         {
             _repoMateriaPrima = repoMateriaPrima;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,15 +32,24 @@ namespace CTT_Padaria.API.Controllers
                     return NoContent();
 
                 if (inativas == false && nome != null)
-                    return Ok(_repoMateriaPrima.SelecionarPorNome(nome));
+                {
+                    var resultado = _repoMateriaPrima.SelecionarPorNome(nome);
+                    return Ok(_mapper.Map<IEnumerable<MateriaPrimaDto>>(resultado));
+                }
 
                 if (inativas == true && nome != null)
-                    return Ok(_repoMateriaPrima.SelecionarInativasPorNome(nome));
+                {
+                    var resultado = _repoMateriaPrima.SelecionarInativasPorNome(nome);
+                    return Ok(_mapper.Map<IEnumerable<MateriaPrimaDto>>(resultado));
+                }                  
 
                 if (inativas == true)
-                    return Ok(_repoMateriaPrima.SelecionarInativas());
+                {
+                    var resultado = (_repoMateriaPrima.SelecionarInativas());
+                    return Ok(_mapper.Map<IEnumerable<MateriaPrimaDto>>(resultado));
+                }                   
 
-                return Ok(materiasPrimas);
+                return Ok(_mapper.Map<IEnumerable<MateriaPrimaDto>>(materiasPrimas));
             }
             catch (System.Exception)
             {
@@ -52,8 +66,7 @@ namespace CTT_Padaria.API.Controllers
                 if (materiaPrima == null)
                     return BadRequest("Não existe matéria prima com esse Id.");
 
-                return Ok(materiaPrima);
-
+                return Ok(_mapper.Map<MateriaPrimaDto>(materiaPrima));
             }
             catch (System.Exception)
             {
@@ -74,8 +87,8 @@ namespace CTT_Padaria.API.Controllers
                     (int)materiaPrima.UnidadeDeMedida != 2)
                     return BadRequest($"Referência {materiaPrima.UnidadeDeMedida} para Unidade de Medida não existe. Referências aceitas: 0(Grama), 1(Mililitro) e 2(Unidade)");
 
-                var materiaPrimaExiste = _repoMateriaPrima.SelecionarPorNome(materiaPrima.Nome);
-                if (materiaPrimaExiste.Count > 0)
+                var materiaPrimaExiste = _repoMateriaPrima.SelecionarMateriaPrimaPorNome(materiaPrima.Nome);
+                if (materiaPrimaExiste != null)
                     return BadRequest("Esta matéria prima já está cadastrada. Atualize, por favor.");
 
                 if (materiaPrima.Quantidade <= 0)

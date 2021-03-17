@@ -14,6 +14,9 @@ namespace CTT_Padaria.API.Helpers
         {
             CreateMap<Usuario, UsuarioDto>()
                 .ForMember(dest => dest.DataNascimento, opt => opt.MapFrom(src => src.DataNascimento.Value.ToString("dd/MM/yyyy")));
+
+            CreateMap<MateriaPrima, MateriaPrimaDto>()
+                .ForMember(dest => dest.UnidadeDeMedida, opt => opt.MapFrom(src => src.UnidadeDeMedida));
         }
     }
 }
