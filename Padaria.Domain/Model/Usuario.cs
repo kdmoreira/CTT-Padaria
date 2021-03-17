@@ -13,6 +13,6 @@ namespace Padaria.Domain.Model
         public string Perfil { get; set; }
         public string Senha { get; set; }
         public List<Venda> Vendas { get; set; }
-        public Caixa Caixa { get; set; }
+        public List<Caixa> Caixas { get; set; }
     }
 }

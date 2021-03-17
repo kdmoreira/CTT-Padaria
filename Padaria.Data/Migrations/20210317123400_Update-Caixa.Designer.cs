@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Padaria.Data.Contexto;
 
 namespace Padaria.Data.Migrations
 {
     [DbContext(typeof(PadariaContexto))]
-    partial class PadariaContextoModelSnapshot : ModelSnapshot
+    [Migration("20210317123400_Update-Caixa")]
+    partial class UpdateCaixa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +45,8 @@ namespace Padaria.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
 
                     b.ToTable("Caixa");
                 });
@@ -259,8 +262,8 @@ namespace Padaria.Data.Migrations
             modelBuilder.Entity("Padaria.Domain.Model.Caixa", b =>
                 {
                     b.HasOne("Padaria.Domain.Model.Usuario", "Usuario")
-                        .WithMany("Caixas")
-                        .HasForeignKey("UsuarioId")
+                        .WithOne("Caixa")
+                        .HasForeignKey("Padaria.Domain.Model.Caixa", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

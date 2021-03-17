@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Padaria.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Padaria.Data.Map
 {
@@ -13,15 +10,27 @@ namespace Padaria.Data.Map
         {
             builder.ToTable("Caixa");
 
-            builder.HasKey(x => x.Id);
-
-            builder.Property(x => x.Status)
-                .HasColumnType("int")
-                .IsRequired();
+            builder.HasKey(x => x.Id);            
 
             builder.HasOne(c => c.Usuario)
-                .WithOne(u => u.Caixa)
-                .HasForeignKey<Caixa>(c => c.UsuarioId);           
+                .WithMany(u => u.Caixas)
+                .HasForeignKey(c => c.UsuarioId);
+
+            builder.Property(x => x.DataAbertura)
+                .HasColumnType("datetime")
+                .IsRequired();
+
+            builder.Property(x => x.DataFechamento)
+                .HasColumnType("datetime")
+                .IsRequired();
+
+            builder.Property(x => x.ValorTotal)
+                .HasColumnType("decimal(18,2)")
+                .IsRequired();
+
+            builder.Property(x => x.Status)
+               .HasColumnType("int")
+               .IsRequired();
         }
 
         

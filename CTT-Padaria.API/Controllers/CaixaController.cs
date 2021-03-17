@@ -28,15 +28,29 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] DateTime data)
         {
             try
             {
-                var comandas = _repoCaixa.SelecionarTudo();
-                if (comandas.Count < 1)
+                if(data.Date != new DateTime(0000-00-00))
+                {
+                    var caixas = _repoCaixa.SelecionarPorData(data);
+                    if (caixas.Count < 1)
+                        return BadRequest("Não existe caixas registrados nesta data.");
+                    
+                    var valorVendas = caixas.Sum(c => c.ValorTotal);
+
+                    return Ok($"Valor Total de vendas referente a {data.ToString("dd/MM/yyyy")} foi de R${valorVendas}.");
+                }
+
+                var caixasTotal = _repoCaixa.SelecionarTudo();
+                if (caixasTotal.Count < 1)
                     return NoContent();
 
-                return Ok(comandas);
+                var valorVendasTotal = caixasTotal.Sum(c => c.ValorTotal);
+
+                return Ok($"Valor Total de todas as vendas foi de R${valorVendasTotal}.");
+
 
             }
             catch (System.Exception)
@@ -58,7 +72,7 @@ namespace CTT_Padaria.API.Controllers
                 {
                     var caixaDataVenda = caixa.Vendas.Where(v => v.DataVenda.Date == data);
                     var ValorTotal = caixaDataVenda.Sum(v => v.ValorTotal);
-                    //return Ok(caixa.Vendas.Where(v => v.DataVenda.Date == data));
+                    
                     return Ok($"Valor referente as vendas do caixa Id: {caixa.Id} na data {data} " +
                         $"foi de R$:{ValorTotal} {caixaDataVenda}");
                 }
@@ -72,48 +86,34 @@ namespace CTT_Padaria.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Caixa caixa)
+        public IActionResult Post([FromBody] Caixa caixa)
         {
             try
             {
-                var usuario = _repoUsuario.Selecionar(caixa.UsuarioId);
-                if (usuario == null)
-                    return NoContent();
+                var existeCaixaAberto = _repoCaixa.VerificaExisteCaixaAberto();
+                if (existeCaixaAberto != null)
+                    return BadRequest($"Caixa Id{existeCaixaAberto.Id} está aberto," +
+                        $"não é permitido abrir o caixa sem fechar o anterior.");
 
-                var caixaExiste = _repoCaixa.SelecionarFuncionarioId(caixa.UsuarioId);
-                if (caixaExiste != null)
-                    return BadRequest("Usuário já pertence a um caixa");
+                var usuario = _repoUsuario.Selecionar(caixa.UsuarioId);
+                if (usuario.Perfil != "Vendedor" && usuario.Perfil != "Administrador")
+                    return BadRequest("Perfil do usuário não corresponde ao de 'Vendedor' ou 'Administrador'.");
+
+                caixa.Status = StatusDoCaixaEnum.Aberto;
+                caixa.DataAbertura = DateTime.Now;
+                caixa.DataFechamento = DateTime.Now;
+                caixa.ValorTotal = 0;
+
                 _repoCaixa.Incluir(caixa);
 
-                return Ok("Caixa criado com sucesso.");
+                return Ok("Caixa Aberto.");                
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return StatusCode(500);
             }
         }
 
-        [HttpPut("AbrirCaixa")]
-        public IActionResult PutAbrirCaixa(Caixa caixa)
-        {
-            var statusCaixa = _repoCaixa.Selecionar(caixa.Id);
-            if (statusCaixa == null)
-                return NoContent();
-
-            if (statusCaixa.UsuarioId != caixa.UsuarioId)
-                return BadRequest("Usuário não pertence a este caixa");
-
-            var caixaAberto = _repoCaixa.VerificaExisteCaixaAberto();
-            if(caixaAberto != null)
-                return BadRequest($"Caixa Id:{caixaAberto.Id} está aberto." +
-                    $" não é permitido abrir o caixa sem fechar o anterior. ");
-                       
-            caixa.Status = StatusDoCaixaEnum.Aberto;
-            _repoCaixa.Alterar(caixa);
-            
-            return Ok($"Caixa Aberto");
-
-        }
 
         [HttpPut("FecharCaixa")]
         public IActionResult PutFecharCaixa(Caixa caixa)
@@ -128,17 +128,21 @@ namespace CTT_Padaria.API.Controllers
             if (statusCaixa.UsuarioId != caixa.UsuarioId)
                 return BadRequest("Usuário não pertence a este caixa");
 
-            caixa.Status = StatusDoCaixaEnum.Fechado;
-            _repoCaixa.Alterar(caixa);
-            DateTime data = DateTime.Now.Date;
-            var vendaData = statusCaixa.Vendas.FindAll(v => v.DataVenda.Date == data);
-            var ValorDiario = vendaData.Sum(v => v.ValorTotal);
+            statusCaixa.Status = StatusDoCaixaEnum.Fechado;
+            statusCaixa.DataFechamento = DateTime.Now;
+            statusCaixa.ValorTotal = statusCaixa.Vendas.Sum(v => v.ValorTotal);
 
-            _repoProduto.DescarteProduzidos();
-            return Ok($"Caixa Fechado, Valor de vendas diária R$:{ValorDiario}");
-            
+            _repoCaixa.Alterar(statusCaixa);
+
+            //DateTime data = DateTime.Now.Date;
+            //var vendaData = statusCaixa.Vendas.FindAll(v => v.DataVenda.Date == data);
+            //var ValorDiario = vendaData.Sum(v => v.ValorTotal);
+
+           // _repoProduto.DescarteProduzidos();
+            return Ok($"Caixa Fechado, Valor de vendas diária R$:{statusCaixa.ValorTotal}");
+
         }
 
-        
+
     }
 }

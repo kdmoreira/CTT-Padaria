@@ -38,22 +38,29 @@ namespace Padaria.Data.Repository.Implementation
                             .FirstOrDefault(c => c.Status.Equals(StatusDoCaixaEnum.Aberto));
         }
 
+        public List<Caixa> SelecionarPorData(DateTime data)
+        {
+            return _contexto.Caixas
+                            .Where(c => c.DataAbertura.Date == data.Date)                            
+                            .ToList();
+        }
+
         //public Caixa SelecionarPorCaixaIdEData(int id, DateTime data)
         //{
         //    var caixa = _contexto.Caixas.FirstOrDefault(c => c.Id.Equals(id));
 
-            //return _contexto.Entry(caixa)
-            //                .Collection(v => v.Vendas)
-            //                .Query()
-            //                .Where(v => v.DataVenda.Date == data.Date)
-            //                .Load();
-                            
-                            
-               
-            //return _contexto.Caixas
-            //                .Include(c => c.Vendas)
-            //                .ThenInclude(v => v.DataVenda.Date == data.Date)
-            //                .FirstOrDefault(v => v.Id.Equals(id));
+        //return _contexto.Entry(caixa)
+        //                .Collection(v => v.Vendas)
+        //                .Query()
+        //                .Where(v => v.DataVenda.Date == data.Date)
+        //                .Load();
+
+
+
+        //return _contexto.Caixas
+        //                .Include(c => c.Vendas)
+        //                .ThenInclude(v => v.DataVenda.Date == data.Date)
+        //                .FirstOrDefault(v => v.Id.Equals(id));
         //}
     }
 }

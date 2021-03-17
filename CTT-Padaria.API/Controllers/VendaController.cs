@@ -82,8 +82,8 @@ namespace CTT_Padaria.API.Controllers
                 if (comanda.DataEntrada.Date < DateTime.Now.Date)
                     return BadRequest("Não é permitido uma venda com a data do dia anterior.");
 
-                var vendaJaRealiza = _repoVenda.SelecionarComandaId(venda.ComandaId);
-                if (vendaJaRealiza != null)
+                var vendaJaRealizada = _repoVenda.SelecionarComandaId(venda.ComandaId);
+                if (vendaJaRealizada != null)
                     return BadRequest("Comanda ja registrada. Favor verificar o número da comanda.");
 
                 venda.DataVenda = DateTime.Now;

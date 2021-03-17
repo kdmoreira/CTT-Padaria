@@ -25,6 +25,22 @@
     <Compile Remove="Migrations\20210315161355_Caixa.Designer.cs" />
     <Compile Remove="Migrations\20210315162556_Comanda-ProdutoComanda-Venda-caixa.cs" />
     <Compile Remove="Migrations\20210315162556_Comanda-ProdutoComanda-Venda-caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317112926_UpdateCaixa.cs" />
+    <Compile Remove="Migrations\20210317112926_UpdateCaixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317113718_UpdateCaixa.cs" />
+    <Compile Remove="Migrations\20210317113718_UpdateCaixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317114024_UpdateCaixa.cs" />
+    <Compile Remove="Migrations\20210317114024_UpdateCaixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317114253_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317114253_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317114650_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317114650_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317115254_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317115254_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317115442_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317115442_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317115824_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317115824_Update-Caixa.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

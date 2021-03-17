@@ -9,6 +9,6 @@ namespace Padaria.Data.Repository.Interface
         Caixa SelecionarFuncionarioId(int id);
 
         Caixa VerificaExisteCaixaAberto();
-        //Caixa SelecionarPorCaixaIdEData(int id, DateTime data);
+        List<Caixa> SelecionarPorData(DateTime data);
     }
 }

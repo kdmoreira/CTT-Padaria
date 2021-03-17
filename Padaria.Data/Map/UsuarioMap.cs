@@ -33,7 +33,6 @@ namespace Padaria.Data.Map
                 .HasColumnType("varchar(100)")
                 .IsRequired();
 
-
             builder.HasData(new Usuario
             {
                 Id = 1,
