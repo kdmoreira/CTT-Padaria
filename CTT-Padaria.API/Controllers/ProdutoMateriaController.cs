@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
+using System.Collections.Generic;
 
 namespace CTT_Padaria.API.Controllers
 {
@@ -11,10 +14,12 @@ namespace CTT_Padaria.API.Controllers
     public class ProdutoMateriaController : ControllerBase
     {
         private readonly IProdutoMateriaRepository _repoProdutoMateria;
+        private readonly IMapper _mapper;
 
-        public ProdutoMateriaController(IProdutoMateriaRepository repoProdutoMateria)
+        public ProdutoMateriaController(IProdutoMateriaRepository repoProdutoMateria, IMapper mapper)
         {
             _repoProdutoMateria = repoProdutoMateria;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -26,10 +31,10 @@ namespace CTT_Padaria.API.Controllers
                 if (produtosMaterias.Count < 1)
                     return NoContent();
 
-                return Ok(produtosMaterias);
+                return Ok(_mapper.Map<IEnumerable<ProdutoMateriaDto>>(produtosMaterias));
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return StatusCode(500);
             }

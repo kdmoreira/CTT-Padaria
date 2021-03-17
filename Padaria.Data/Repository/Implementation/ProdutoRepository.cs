@@ -55,7 +55,7 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Produtos
                 .Include(x => x.ProdutosMaterias)
-                //.ThenInclude(x => x.MateriaPrima)
+                .ThenInclude(x => x.MateriaPrima)
                 .ToList();
         }
 

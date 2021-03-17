@@ -17,6 +17,21 @@ namespace CTT_Padaria.API.Helpers
 
             CreateMap<MateriaPrima, MateriaPrimaDto>()
                 .ForMember(dest => dest.UnidadeDeMedida, opt => opt.MapFrom(src => src.UnidadeDeMedida));
+
+            CreateMap<ProdutoMateria, ProdutoMateriaDto>()
+                .ForPath(dest => dest.Produto, opt => opt.MapFrom(src => src.Produto.Nome))                
+                .ForPath(dest => dest.MateriaPrima, opt => opt.MapFrom(src => src.MateriaPrima.Nome));
+
+            CreateMap<Produto, ProdutoDto>()                
+                .ForPath(dest => dest.Producao, opt => opt.MapFrom(src => src.Producao))
+                .ForPath(dest => dest.UnidadeDeMedida, opt => opt.MapFrom(src => src.UnidadeDeMedida))                
+                .ForMember(dest => dest.Materias, opt => opt.MapFrom(src => src.ProdutosMaterias
+                .Select(m => new MateriasProdutoDto
+                {
+                    Materia = m.MateriaPrima.Nome,
+                    Quantidade = m.Quantidade,
+                    Porcao = m.Porcao
+                })));  
         }
     }
 }

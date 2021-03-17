@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
+using System.Collections.Generic;
 
 namespace CTT_Padaria.API.Controllers
 {
@@ -11,10 +14,12 @@ namespace CTT_Padaria.API.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _repoProduto;
+        private readonly IMapper _mapper;
 
-        public ProdutoController(IProdutoRepository repoProduto)
+        public ProdutoController(IProdutoRepository repoProduto, IMapper mapper)
         {
             _repoProduto = repoProduto;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,21 +27,34 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                var produtos = _repoProduto.SelecionarTudoCompleto();
-                if (produtos.Count < 1)
-                    return NoContent();
-
                 if (inativos == false && nome != null)
-                    return Ok(_repoProduto.SelecionarPorNome(nome));
+                {
+                    var produto = _repoProduto.SelecionarPorNome(nome);
+                    if (produto.Count < 1)
+                        return NoContent();
+                    return Ok(_mapper.Map<IEnumerable<ProdutoDto>>(produto));
+                }
 
                 if (inativos == true && nome != null)
-                    return Ok(_repoProduto.SelecionarInativosPorNome(nome));
+                {
+                    var produto = _repoProduto.SelecionarInativosPorNome(nome);
+                    if (produto.Count < 1)
+                        return NoContent();
+                    return Ok(_mapper.Map<IEnumerable<ProdutoDto>>(produto));
+                }
 
                 if (inativos == true)
-                    return Ok(_repoProduto.SelecionarInativos());
+                {
+                    var produto = _repoProduto.SelecionarInativos();
+                    if (produto.Count < 1)
+                        return NoContent();
+                    return Ok(_mapper.Map<IEnumerable<ProdutoDto>>(produto));
+                }
 
-                return Ok(produtos);
-
+                var produtos = _repoProduto.SelecionarTudo();
+                if (produtos.Count < 1)
+                    return NoContent();
+                return Ok(_mapper.Map<IEnumerable<ProdutoDto>>(produtos));                
             }
             catch (System.Exception)
             {
