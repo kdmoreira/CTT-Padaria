@@ -51,18 +51,12 @@ namespace Padaria.Data.Repository.Implementation
                 .FirstOrDefault(x => x.Nome.Equals(nome));
         }
 
-        public List<Produto> SelecionarTudoCompleto()
-        {
-            return _contexto.Produtos
-                .Include(x => x.ProdutosMaterias)
-                .ThenInclude(x => x.MateriaPrima)
-                .ToList();
-        }
-
         public override List<Produto> SelecionarTudo()
         {
             return _contexto.Produtos
                 .Where(x => x.Ativo == true)
+                .Include(x => x.ProdutosMaterias)
+                .ThenInclude(x => x.MateriaPrima)
                 .OrderBy(x => x.Nome)
                 .ToList();
         }

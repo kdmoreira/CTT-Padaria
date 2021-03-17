@@ -45,7 +45,11 @@ namespace CTT_Padaria.API.Controllers
         public IActionResult Post([FromBody] ProdutoMateria produtoMateria)
         {
             try
-            {  
+            {
+                var produtoMaterias = _repoProdutoMateria.SelecionarPorProdutoIdMateriaId(produtoMateria.ProdutoId, produtoMateria.MateriaPrimaId);
+                if (produtoMaterias != null)
+                    return BadRequest("Esse produto já está vinculado a esta matéria prima.");
+
                 _repoProdutoMateria.Incluir(produtoMateria);
 
                 return Created("","Receita (ProdutoMateria) cadastrada com sucesso.");
@@ -66,7 +70,7 @@ namespace CTT_Padaria.API.Controllers
                 if (produtoMateriaAlterado == null)
                     return NoContent();
 
-                return Ok("Usuário alterado com sucesso.");
+                return Ok("Matéria vinculada ao prduto com sucesso.");
             }
             catch (System.Exception)
             {
@@ -74,18 +78,24 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("{produtoId}/{materiaPrimaId}")]
+        public IActionResult Delete(int produtoId, int materiaPrimaId)
         {
             try
             {
-                var produtoMateriaExiste = _repoProdutoMateria.Selecionar(id);
-                if (produtoMateriaExiste == null)
-                    return NoContent();
+                var produtoMaterias = _repoProdutoMateria.SelecionarPorProdutoIdMateriaId(produtoId, materiaPrimaId);
 
-                _repoProdutoMateria.Excluir(produtoMateriaExiste);
+                if (produtoMaterias == null)
+                    return BadRequest("Esse produto não está vinculado a esta matéria prima.");
 
-                return Ok("Usuário removido com sucesso.");
+               
+                //if (produtoMaterias != null)
+                //    return BadRequest("Esse produto não está vinculado a esta matéria prima.");
+
+
+                _repoProdutoMateria.Excluir(produtoMaterias);
+
+                return Ok("Matéria foi desvinculada do produto.");
             }
             catch (System.Exception)
             {

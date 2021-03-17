@@ -9,7 +9,13 @@ namespace Padaria.Data.Repository.Implementation
 {
     public class ProdutoMateriaRepository : BaseRepository<ProdutoMateria>, IProdutoMateriaRepository
     {
-        public ProdutoMateriaRepository(PadariaContexto contexto) : base(contexto) { }
+        public ProdutoMateriaRepository(PadariaContexto contexto) : base(contexto) { }        
+
+        public ProdutoMateria SelecionarPorProdutoIdMateriaId(int produtoId, int materiaId)
+        {
+            return _contexto.ProdutosMaterias
+                            .FirstOrDefault(p => p.ProdutoId.Equals(produtoId) && p.MateriaPrimaId.Equals(materiaId));
+        }
 
         public List<ProdutoMateria> SelecionarTudoCompleto()
         {

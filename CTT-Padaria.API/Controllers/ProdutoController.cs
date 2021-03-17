@@ -54,6 +54,7 @@ namespace CTT_Padaria.API.Controllers
                 var produtos = _repoProduto.SelecionarTudo();
                 if (produtos.Count < 1)
                     return NoContent();
+
                 return Ok(_mapper.Map<IEnumerable<ProdutoDto>>(produtos));                
             }
             catch (System.Exception)
