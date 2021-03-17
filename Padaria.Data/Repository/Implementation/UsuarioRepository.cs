@@ -20,7 +20,8 @@ namespace Padaria.Data.Repository.Implementation
 
         public Usuario SelecionarPorEmail(string email)
         {
-            return _contexto.Usuarios.FirstOrDefault(x => x.Email.ToLower().Equals(email.ToLower()));
+            var a = _contexto.Usuarios.FirstOrDefault(x => x.Email == email);
+            return a;
         }
 
         public List<Usuario> SelecionarPorNome(string nome)
@@ -36,9 +37,5 @@ namespace Padaria.Data.Repository.Implementation
             return _contexto.Usuarios.FirstOrDefault(u => u.Nome == nome && u.Senha == senha);
         }
 
-        public Usuario SelecionarPorNomeEmail(string nome, string email)
-        {
-            return _contexto.Usuarios.FirstOrDefault(u => u.Nome.Equals(nome) && u.Email.Equals(email));
-        }
     }
 }

@@ -108,7 +108,7 @@ namespace CTT_Padaria.API.Controllers
 
                 return Ok("Caixa Aberto.");                
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return StatusCode(500);
             }

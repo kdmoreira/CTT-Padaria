@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using CTT_Padaria.API.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
+using System.Collections.Generic;
 
 namespace CTT_Padaria.API.Controllers
 {
@@ -12,27 +14,33 @@ namespace CTT_Padaria.API.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _repoUsuario;
+        private readonly IMapper _mapper;
 
-        public UsuarioController(IUsuarioRepository repoUsuario)
+        public UsuarioController(IUsuarioRepository repoUsuario, IMapper mapper)
         {
             _repoUsuario = repoUsuario;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Get([FromQuery] string nome, string email)
         {
             try
-            { 
-                if (nome != null && email != null)
-                   return Ok(_repoUsuario.SelecionarPorNomeEmail(nome, email));
-
+            {
                 if (nome != null)
-                    return Ok(_repoUsuario.SelecionarPorNome(nome));
+                {
+                    var usuariosNome = _repoUsuario.SelecionarPorNome(nome);
+                    return Ok(_mapper.Map<IEnumerable<UsuarioDto>>(usuariosNome));
+                }
 
                 if (email != null)
-                    return Ok(_repoUsuario.SelecionarPorEmail(email));
-                
-                return Ok(_repoUsuario.SelecionarTudo());
+                {
+                    var usuarioEmail = _repoUsuario.SelecionarPorEmail(email);
+                    return Ok(_mapper.Map<UsuarioDto>(usuarioEmail));                    
+                }
+
+                var usuarios = _repoUsuario.SelecionarTudo();
+                return Ok(_mapper.Map<IEnumerable<UsuarioDto>>(usuarios));
 
             }
             catch (System.Exception)

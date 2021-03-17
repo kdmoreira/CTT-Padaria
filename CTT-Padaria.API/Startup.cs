@@ -83,6 +83,8 @@ namespace CTT_Padaria.API
                     ValidateAudience = false
                 };
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
