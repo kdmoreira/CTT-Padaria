@@ -16,12 +16,15 @@ namespace CTT_Padaria.API.Controllers
     {
         private readonly ICaixaRepository _repoCaixa;
         private readonly IUsuarioRepository _repoUsuario;
+        private readonly IProdutoRepository _repoProduto;
 
         public CaixaController(ICaixaRepository repoCaixa,
-                               IUsuarioRepository repoUsuario)
+                               IUsuarioRepository repoUsuario,
+                               IProdutoRepository repoProduto)
         {
             _repoCaixa = repoCaixa;
             _repoUsuario = repoUsuario;
+            _repoProduto = repoProduto;
         }
 
         [HttpGet]
@@ -131,6 +134,7 @@ namespace CTT_Padaria.API.Controllers
             var vendaData = statusCaixa.Vendas.FindAll(v => v.DataVenda.Date == data);
             var ValorDiario = vendaData.Sum(v => v.ValorTotal);
 
+            _repoProduto.DescarteProduzidos();
             return Ok($"Caixa Fechado, Valor de vendas diária R$:{ValorDiario}");
             
         }

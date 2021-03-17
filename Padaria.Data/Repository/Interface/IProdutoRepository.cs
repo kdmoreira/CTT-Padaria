@@ -7,6 +7,8 @@ namespace Padaria.Data.Repository.Interface
     {
         List<Produto> SelecionarPorNome(string nome);
 
+        void DescarteProduzidos();
+
         Produto SelecionarProdutoPorNome(string nome);
 
         List<Produto> SelecionarTudoCompleto();

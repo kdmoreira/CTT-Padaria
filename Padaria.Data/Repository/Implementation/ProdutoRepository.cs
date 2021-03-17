@@ -2,6 +2,7 @@
 using Padaria.Data.Contexto;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +12,17 @@ namespace Padaria.Data.Repository.Implementation
     {
         public ProdutoRepository(PadariaContexto contexto) : base(contexto) { }
 
+        public void DescarteProduzidos()
+        {
+            var produzidos = _contexto.Produtos.Where(x => x.Producao == 0);
+            foreach (Produto produto in produzidos)
+            {
+                produto.Quantidade = 0;
+                _contexto.Entry(produto).Property("Quantidade").IsModified = true;
+            }
+            _contexto.SaveChanges();
+        }
+        
         public List<Produto> SelecionarInativos()
         {
             return _contexto.Produtos
@@ -42,7 +54,9 @@ namespace Padaria.Data.Repository.Implementation
         public List<Produto> SelecionarTudoCompleto()
         {
             return _contexto.Produtos
-                .Include(x => x.ProdutosMaterias).ToList();
+                .Include(x => x.ProdutosMaterias)
+                //.ThenInclude(x => x.MateriaPrima)
+                .ToList();
         }
 
         public override List<Produto> SelecionarTudo()
@@ -59,10 +73,9 @@ namespace Padaria.Data.Repository.Implementation
             if (receita.Count <= 0)
                 return null;
 
-            float diferenca = quantidade - produtoEncontrado.Quantidade;
+            //float diferenca = quantidade - produtoEncontrado.Quantidade;
             List<float> quantidadesProporcionais = new List<float>();
 
-            // Verifica se há alguma matéria prima com estoque insuficiente
             for (int k = receita.Count - 1; k >= 0; k--)
             {
                 var materiaPrimaEncontrada = _contexto.MateriasPrimas.FirstOrDefault(x => x.Id.Equals(receita[k].MateriaPrimaId));
@@ -74,11 +87,16 @@ namespace Padaria.Data.Repository.Implementation
                 else
                 { 
                     // Calcula a quantidade de matéria prima proporcional à quantidade a ser produzida
-                    float x = (100 * diferenca) / receita[k].Porcao;
+                    float x = (100 * quantidade) / receita[k].Porcao;
                     quantidadesProporcionais.Add(receita[k].Quantidade);
                     int indice = quantidadesProporcionais.Count();
                     quantidadesProporcionais[indice - 1] *= (x / 100);
+                    if ((int)materiaPrimaEncontrada.UnidadeDeMedida == 2)
+                    {
+                        quantidadesProporcionais[indice - 1] = (float)Math.Ceiling(quantidadesProporcionais[indice - 1]);
+                    }
 
+                    // Verifica se há alguma matéria prima com estoque insuficiente
                     if (materiaPrimaEncontrada.Quantidade - quantidadesProporcionais[indice - 1] < 0)
                     {
                         return null;
@@ -86,17 +104,7 @@ namespace Padaria.Data.Repository.Implementation
                 }
             }
 
-            // Caso haja estoque de matéria prima suficiente, a quantidade para a produção é abatida
-            /*int i = 0;
-            foreach (ProdutoMateria pm in receita)
-            {
-                var materiaPrimaEncontrada = _contexto.MateriasPrimas.FirstOrDefault(x => x.Id.Equals(pm.MateriaPrimaId));
-
-                materiaPrimaEncontrada.Quantidade -= quantidadesProporcionais[i];
-                //i++;
-            } */
-
-            int j = 4;
+            int j = receita.Count - 1;
             for (int i = 0; i < receita.Count; i++)
             {
                 var materiaPrimaEncontrada = _contexto.MateriasPrimas.FirstOrDefault(x => x.Id.Equals(receita[i].MateriaPrimaId));

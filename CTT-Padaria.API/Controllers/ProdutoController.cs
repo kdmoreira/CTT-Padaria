@@ -22,7 +22,7 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                var produtos = _repoProduto.SelecionarTudo();
+                var produtos = _repoProduto.SelecionarTudoCompleto();
                 if (produtos.Count < 1)
                     return NoContent();
 
@@ -91,7 +91,7 @@ namespace CTT_Padaria.API.Controllers
                     return NoContent();
 
                 if (produtoEncontrado.Producao == 0 &&
-                    produto.Quantidade > produtoEncontrado.Quantidade)
+                    produto.Quantidade > 0)
                 {
                     var producao = _repoProduto.Produzir(produtoEncontrado, produto.Quantidade);
                     if (producao == null)
@@ -103,7 +103,7 @@ namespace CTT_Padaria.API.Controllers
                 return Ok("Produto alterado com sucesso.");
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return StatusCode(500);
             }
