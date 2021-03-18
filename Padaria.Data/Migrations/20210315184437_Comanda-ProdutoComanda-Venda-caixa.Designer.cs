@@ -258,7 +258,7 @@ namespace Padaria.Data.Migrations
 
             modelBuilder.Entity("Padaria.Domain.Model.ProdutoComanda", b =>
                 {
-                    b.HasOne("Padaria.Domain.Model.Comanda", "Comanada")
+                    b.HasOne("Padaria.Domain.Model.Comanda", "Comanda")
                         .WithMany("ProdutosComanda")
                         .HasForeignKey("ComandaId")
                         .OnDelete(DeleteBehavior.Cascade)

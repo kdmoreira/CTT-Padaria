@@ -10,8 +10,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador, Vendedor")]
+    [Authorize]
+    [Authorize(Roles = "Administrador,Vendedor")]
     public class CaixaController : ControllerBase
     {
         private readonly ICaixaRepository _repoCaixa;
@@ -96,6 +96,8 @@ namespace CTT_Padaria.API.Controllers
                         $"não é permitido abrir o caixa sem fechar o anterior.");
 
                 var usuario = _repoUsuario.Selecionar(caixa.UsuarioId);
+                if (usuario == null)
+                    return BadRequest("Não há usuário com este Id.");
                 if (usuario.Perfil != "Vendedor" && usuario.Perfil != "Administrador")
                     return BadRequest("Perfil do usuário não corresponde ao de 'Vendedor' ou 'Administrador'.");
 

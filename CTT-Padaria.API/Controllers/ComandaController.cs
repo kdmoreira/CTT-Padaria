@@ -13,8 +13,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
+    [Authorize(Roles = "Administrador,Vendedor")]
     public class ComandaController : ControllerBase
     {
         private readonly IComandaRepository _repoComanda;

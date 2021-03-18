@@ -27,6 +27,8 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Produtos
                 .OrderBy(x => x.Nome)
+                .Include(x => x.ProdutosMaterias)
+                .ThenInclude(x => x.MateriaPrima)
                 .ToList();
         }
 
@@ -34,6 +36,8 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Produtos
                 .Where(x => x.Nome.Contains(nome))
+                .Include(x => x.ProdutosMaterias)
+                .ThenInclude(x => x.MateriaPrima)
                 .OrderBy(x => x.Nome)
                 .ToList();
         }
@@ -42,6 +46,8 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Produtos
                 .Where(x => x.Nome.Contains(nome) && x.Ativo == true)
+                .Include(x => x.ProdutosMaterias)
+                .ThenInclude(x => x.MateriaPrima)
                 .ToList();
         }
 

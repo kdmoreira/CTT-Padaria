@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
@@ -9,8 +10,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador,Estoquista,Padeiro")]
+    [Authorize]
+    [Authorize(Roles = "Administrador,Estoquista,Padeiro")]
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _repoProduto;
@@ -114,7 +115,7 @@ namespace CTT_Padaria.API.Controllers
                 {
                     var producao = _repoProduto.Produzir(produtoEncontrado, produto.Quantidade);
                     if (producao == null)
-                        return BadRequest("Matéria prima insuficiente para esta quantidade de produto.");
+                        return BadRequest("Não há receita ou matéria prima suficiente para esta quantidade de produto.");
                 }
 
                 produto.Quantidade += produtoEncontrado.Quantidade;
@@ -127,26 +128,5 @@ namespace CTT_Padaria.API.Controllers
                 return StatusCode(500);
             }
         }
-
-        // Não poderemos deletar produtos
-        /* 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            try
-            {
-                var produtoExiste = _repoProduto.Selecionar(id);
-                if (produtoExiste == null)
-                    return NoContent();
-
-                _repoProduto.Excluir(produtoExiste);
-
-                return Ok("Produto removido com sucesso.");
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(500);
-            }
-        } */
     }
 }

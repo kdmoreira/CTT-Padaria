@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
@@ -9,8 +10,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _repoUsuario;
@@ -35,8 +36,12 @@ namespace CTT_Padaria.API.Controllers
 
                 if (email != null)
                 {
+                    //var usuarioEmail = _repoUsuario.SelecionarPorEmail(email);
+                    //return Ok(_mapper.Map<UsuarioDto>(usuarioEmail));
                     var usuarioEmail = _repoUsuario.SelecionarPorEmail(email);
-                    return Ok(_mapper.Map<UsuarioDto>(usuarioEmail));                    
+                    if (usuarioEmail == null)
+                        return BadRequest("Não existem usuários com este email.");
+                    return Ok(_mapper.Map<UsuarioDto>(usuarioEmail));   
                 }
 
                 var usuarios = _repoUsuario.SelecionarTudo();
