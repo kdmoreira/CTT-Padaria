@@ -3,6 +3,7 @@ using CTT_Padaria.API.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
+using System;
 using System.Collections.Generic;
 
 namespace CTT_Padaria.API.Controllers
@@ -14,11 +15,15 @@ namespace CTT_Padaria.API.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _repoProduto;
+        private readonly ICaixaRepository _repoCaixa;
         private readonly IMapper _mapper;
 
-        public ProdutoController(IProdutoRepository repoProduto, IMapper mapper)
+        public ProdutoController(IProdutoRepository repoProduto,
+                                 ICaixaRepository repoCaixa,  
+                                 IMapper mapper)
         {
             _repoProduto = repoProduto;
+            _repoCaixa = repoCaixa;
             _mapper = mapper;
         }
 
@@ -128,25 +133,30 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
-        // Não poderemos deletar produtos
-        /* 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpPut("descarte")]
+        public IActionResult PutDescarte()
         {
             try
             {
-                var produtoExiste = _repoProduto.Selecionar(id);
-                if (produtoExiste == null)
-                    return NoContent();
+                DateTime data = DateTime.Now;
 
-                _repoProduto.Excluir(produtoExiste);
+                var caixaAberto = _repoCaixa.VerificaExisteCaixaAbertoPorData(data);
+                if (caixaAberto != null)
+                    return BadRequest($"O caixa Id{caixaAberto.Id} " +
+                        $"está aberto. Para descartar os produtos, todos os caixas devem estar fechados.");
 
-                return Ok("Produto removido com sucesso.");
+                var produtosDescartados = _repoProduto.SelecionarProdutosPropios();
+                _repoProduto.DescarteProduzidos();
+
+                return Ok(_mapper.Map<IEnumerable<ProdutoDescarteDto>>(produtosDescartados));
+
             }
             catch (System.Exception)
             {
                 return StatusCode(500);
             }
-        } */
+        }
+
+
     }
 }

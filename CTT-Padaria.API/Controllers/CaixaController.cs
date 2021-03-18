@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Enum;
 using Padaria.Domain.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CTT_Padaria.API.Controllers
@@ -17,14 +20,17 @@ namespace CTT_Padaria.API.Controllers
         private readonly ICaixaRepository _repoCaixa;
         private readonly IUsuarioRepository _repoUsuario;
         private readonly IProdutoRepository _repoProduto;
+        private readonly IMapper _mapper;
 
         public CaixaController(ICaixaRepository repoCaixa,
                                IUsuarioRepository repoUsuario,
-                               IProdutoRepository repoProduto)
+                               IProdutoRepository repoProduto,
+                               IMapper mapper)
         {
             _repoCaixa = repoCaixa;
             _repoUsuario = repoUsuario;
             _repoProduto = repoProduto;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -32,35 +38,43 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                if(data.Date != new DateTime(0000-00-00))
+                if(data.Date != new DateTime())
                 {
                     var caixas = _repoCaixa.SelecionarPorData(data);
                     if (caixas.Count < 1)
                         return BadRequest("Não existe caixas registrados nesta data.");
-                    
-                    var valorVendas = caixas.Sum(c => c.ValorTotal);
 
-                    return Ok($"Valor Total de vendas referente a {data.ToString("dd/MM/yyyy")} foi de R${valorVendas}.");
+                    var cxData = _mapper.Map<IEnumerable<CaixasDto>>(caixas);
+                    var vTotalCaixas = new CaixaTotalDto()
+                    {
+                        ValorTotal = cxData.Sum(c => c.ValorTotal),
+                        Caixas = cxData.ToList()
+                    };
+
+                    return Ok(vTotalCaixas);
                 }
 
                 var caixasTotal = _repoCaixa.SelecionarTudo();
                 if (caixasTotal.Count < 1)
                     return NoContent();
 
-                var valorVendasTotal = caixasTotal.Sum(c => c.ValorTotal);
+                var cx = _mapper.Map<IEnumerable<CaixasDto>>(caixasTotal);
+                var valorTotalCaixas = new CaixaTotalDto()
+                {
+                    ValorTotal = cx.Sum(c => c.ValorTotal),
+                    Caixas = cx.ToList()                    
+                };
 
-                return Ok($"Valor Total de todas as vendas foi de R${valorVendasTotal}.");
-
-
+                return Ok(valorTotalCaixas); 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return StatusCode(500);
             }
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromQuery] DateTime data, int id)
+        public IActionResult GetById(int id)
         {
             try
             {
@@ -68,16 +82,7 @@ namespace CTT_Padaria.API.Controllers
                 if (caixa == null)
                     return NoContent();
 
-                if (data.Date != new DateTime())
-                {
-                    var caixaDataVenda = caixa.Vendas.Where(v => v.DataVenda.Date == data);
-                    var ValorTotal = caixaDataVenda.Sum(v => v.ValorTotal);
-                    
-                    return Ok($"Valor referente as vendas do caixa Id: {caixa.Id} na data {data} " +
-                        $"foi de R$:{ValorTotal} {caixaDataVenda}");
-                }
-
-                return Ok(caixa);
+                return Ok(_mapper.Map<CaixaDto>(caixa));                
             }
             catch (System.Exception)
             {
@@ -133,16 +138,7 @@ namespace CTT_Padaria.API.Controllers
             statusCaixa.ValorTotal = statusCaixa.Vendas.Sum(v => v.ValorTotal);
 
             _repoCaixa.Alterar(statusCaixa);
-
-            //DateTime data = DateTime.Now.Date;
-            //var vendaData = statusCaixa.Vendas.FindAll(v => v.DataVenda.Date == data);
-            //var ValorDiario = vendaData.Sum(v => v.ValorTotal);
-
-           // _repoProduto.DescarteProduzidos();
-            return Ok($"Caixa Fechado, Valor de vendas diária R$:{statusCaixa.ValorTotal}");
-
+            return Ok(_mapper.Map<CaixasDto>(statusCaixa));
         }
-
-
     }
 }

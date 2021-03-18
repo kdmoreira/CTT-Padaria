@@ -49,6 +49,27 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Incluir Usuário.
+        /// </summary>   
+        /// <remarks>
+        /// Exemplo de request:        
+        ///     Put /api/clientes/1
+        ///     
+        ///         {
+        ///             "nome": "NomeUsuario",,
+        ///             "email" : "emailUsuario@mail.com",
+        ///             "senha": "123",
+        ///             "perfil": "Vendedor",
+        ///             "dataNascimento": "2000-05-04"
+        ///         }
+        /// </remarks>
+        /// <response code="201">Cliente alterado com sucesso.</response>
+        /// <response code="204">Cliente não foi encontrado.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public IActionResult Post([FromBody] Usuario usuario)
         {

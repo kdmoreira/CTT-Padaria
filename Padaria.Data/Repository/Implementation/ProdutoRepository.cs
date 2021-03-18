@@ -12,6 +12,13 @@ namespace Padaria.Data.Repository.Implementation
     {
         public ProdutoRepository(PadariaContexto contexto) : base(contexto) { }
 
+        public List<Produto> SelecionarProdutosPropios()
+        {
+            return _contexto.Produtos
+               .Where(x => x.Producao.Equals(0))
+               .ToList();
+        }
+
         public void DescarteProduzidos()
         {
             var produzidos = _contexto.Produtos.Where(x => x.Producao == 0);
@@ -108,6 +115,7 @@ namespace Padaria.Data.Repository.Implementation
             }
             return produtoEncontrado;
         }
+
         
     }
 }

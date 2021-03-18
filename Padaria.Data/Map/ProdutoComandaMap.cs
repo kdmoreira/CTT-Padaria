@@ -16,7 +16,7 @@ namespace Padaria.Data.Map
                 .WithMany(p => p.ProdutosComanda)
                 .HasForeignKey(pc => pc.ProdutoId);
 
-            builder.HasOne<Comanda>(pc => pc.Comanada)
+            builder.HasOne<Comanda>(pc => pc.Comanda)
                 .WithMany(m => m.ProdutosComanda)
                 .HasForeignKey(pc => pc.ComandaId);
 

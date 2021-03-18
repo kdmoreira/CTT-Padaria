@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Enum;
 using Padaria.Domain.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CTT_Padaria.API.Controllers
@@ -17,14 +20,17 @@ namespace CTT_Padaria.API.Controllers
         private readonly IVendaRepository _repoVenda;
         private readonly ICaixaRepository _repoCaixa;
         private readonly IComandaRepository _repoComanda;
+        private readonly IMapper _mapper;
 
         public VendaController(IVendaRepository repoVenda,
                                ICaixaRepository repoCaixa,
-                               IComandaRepository repoComanda)
+                               IComandaRepository repoComanda,
+                               IMapper mapper)
         {
             _repoVenda = repoVenda;
             _repoCaixa = repoCaixa;
             _repoComanda = repoComanda;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -36,7 +42,7 @@ namespace CTT_Padaria.API.Controllers
                 if (vendas.Count < 1)
                     return NoContent();
 
-                return Ok(vendas);
+                return Ok(_mapper.Map<IEnumerable<VendaDto>>(vendas));
 
             }
             catch (System.Exception)
@@ -50,11 +56,11 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
-                var venda = _repoVenda.Selecionar(id);
+                var venda = _repoVenda.SelecionarComandaId(id);
                 if (venda == null)
                     return NoContent();
-               
-                return Ok(venda);
+
+                return Ok(_mapper.Map<VendaDto>(venda));
             }
             catch (System.Exception)
             {
@@ -89,6 +95,8 @@ namespace CTT_Padaria.API.Controllers
                 venda.DataVenda = DateTime.Now;
                 venda.ValorTotal = comanda.ProdutosComanda.Sum(pc => pc.PrecoTotal);               
                 venda.StatusDaVenda = StatusDaVendaEnum.Realizada;
+                venda.UsuarioId = caixa.UsuarioId;
+
 
                 if (venda.FormaDePagamento == FormaDePagamentoEnum.Dinheiro)
                 {
@@ -97,11 +105,10 @@ namespace CTT_Padaria.API.Controllers
 
                     venda.Troco = venda.Dinheiro - venda.ValorTotal;
                 }
-
-                venda.UsuarioId = caixa.UsuarioId;
+                
                 _repoVenda.Incluir(venda);
 
-                return Created("", venda);
+                return Ok(_mapper.Map<VendaDto>(venda));
             }
             catch (System.Exception)
             {

@@ -25,24 +25,7 @@ namespace CTT_Padaria.API.Controllers
             _repoComanda = repoComanda;
             _mapper = mapper;
         }
-
-        //[HttpGet]
-        //public IActionResult Get()
-        //{
-        //    try
-        //    {
-        //        var comandas = _repoComanda.SelecionarTudo();
-        //        if (comandas.Count < 1)
-        //            return NoContent();
-
-        //        return Ok(_mapper.Map<IEnumerable<ComandaDto>>(comandas));
-
-        //    }
-        //    catch (System.Exception)
-        //    {
-        //        return StatusCode(500);
-        //    }
-        //}
+        
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)

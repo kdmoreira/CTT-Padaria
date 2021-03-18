@@ -17,6 +17,7 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Caixas
                              .Include(c => c.Vendas)
+                             .Include(c => c.Usuario)
                              .ToList();
         }
 
@@ -24,7 +25,8 @@ namespace Padaria.Data.Repository.Implementation
         {
             return _contexto.Caixas
                             .Include(c => c.Vendas)
-                            .FirstOrDefault(c => c.Id.Equals(id));
+                            .Include(c => c.Usuario)
+                            .FirstOrDefault(c => c.Id.Equals(id));                            
         }
 
         public Caixa SelecionarFuncionarioId(int id)
@@ -38,29 +40,27 @@ namespace Padaria.Data.Repository.Implementation
                             .FirstOrDefault(c => c.Status.Equals(StatusDoCaixaEnum.Aberto));
         }
 
+        public Caixa VerificaExisteCaixaAbertoPorData(DateTime data)
+        {
+            return _contexto.Caixas
+                            .FirstOrDefault(c => c.Status.Equals(StatusDoCaixaEnum.Aberto) && c.DataAbertura.Date == data.Date);
+        }
+
         public List<Caixa> SelecionarPorData(DateTime data)
         {
             return _contexto.Caixas
-                            .Where(c => c.DataAbertura.Date == data.Date)                            
+                            .Where(c => c.DataAbertura.Date == data.Date )
+                            .OrderBy(c => c.DataAbertura)
+                            .Include(c => c.Usuario)
                             .ToList();
         }
 
-        //public Caixa SelecionarPorCaixaIdEData(int id, DateTime data)
-        //{
-        //    var caixa = _contexto.Caixas.FirstOrDefault(c => c.Id.Equals(id));
-
-        //return _contexto.Entry(caixa)
-        //                .Collection(v => v.Vendas)
-        //                .Query()
-        //                .Where(v => v.DataVenda.Date == data.Date)
-        //                .Load();
-
-
-
-        //return _contexto.Caixas
-        //                .Include(c => c.Vendas)
-        //                .ThenInclude(v => v.DataVenda.Date == data.Date)
-        //                .FirstOrDefault(v => v.Id.Equals(id));
-        //}
+        public Caixa SelecionarPorDataEId(DateTime data, int id)
+        {
+            return _contexto.Caixas
+                            .Where(c => c.DataAbertura.Date.Date == data.Date && c.Id == id)
+                            .FirstOrDefault();
+        }
+        
     }
 }

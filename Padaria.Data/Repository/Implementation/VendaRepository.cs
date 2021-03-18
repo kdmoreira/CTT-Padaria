@@ -11,9 +11,17 @@ namespace Padaria.Data.Repository.Implementation
     {
         public VendaRepository(PadariaContexto contexto) : base(contexto) { }
 
+        public override List<Venda> SelecionarTudo()
+        {
+            return _contexto.Vendas
+                            .Include(v => v.Usuario)
+                            .ToList();
+        }
         public Venda SelecionarComandaId(int id)
         {
-            return _contexto.Vendas.FirstOrDefault(v => v.ComandaId.Equals(id));
+            return _contexto.Vendas
+                            .Include(v => v.Usuario)
+                            .FirstOrDefault(v => v.ComandaId.Equals(id));
         }
     }
 }
