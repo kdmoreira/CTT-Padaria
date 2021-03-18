@@ -36,7 +36,7 @@ namespace CTT_Padaria.API.Controllers
                 {
                     var caixas = _repoCaixa.SelecionarPorData(data);
                     if (caixas.Count < 1)
-                        return BadRequest("Não existe caixas registrados nesta data.");
+                        return BadRequest("Não existem caixas registrados nesta data.");
                     
                     var valorVendas = caixas.Sum(c => c.ValorTotal);
 
@@ -73,8 +73,8 @@ namespace CTT_Padaria.API.Controllers
                     var caixaDataVenda = caixa.Vendas.Where(v => v.DataVenda.Date == data);
                     var ValorTotal = caixaDataVenda.Sum(v => v.ValorTotal);
                     
-                    return Ok($"Valor referente as vendas do caixa Id: {caixa.Id} na data {data} " +
-                        $"foi de R$:{ValorTotal} {caixaDataVenda}");
+                    return Ok($"Valor referente às vendas do caixa Id: {caixa.Id} na data {data} " +
+                        $"foi de R$:{ValorTotal}");
                 }
 
                 return Ok(caixa);
@@ -92,7 +92,7 @@ namespace CTT_Padaria.API.Controllers
             {
                 var existeCaixaAberto = _repoCaixa.VerificaExisteCaixaAberto();
                 if (existeCaixaAberto != null)
-                    return BadRequest($"Caixa Id{existeCaixaAberto.Id} está aberto," +
+                    return BadRequest($"Caixa Id{existeCaixaAberto.Id} está aberto, " +
                         $"não é permitido abrir o caixa sem fechar o anterior.");
 
                 var usuario = _repoUsuario.Selecionar(caixa.UsuarioId);
@@ -128,7 +128,7 @@ namespace CTT_Padaria.API.Controllers
                 return BadRequest($"Caixa Id:{statusCaixa.Id} não esta aberto.");
 
             if (statusCaixa.UsuarioId != caixa.UsuarioId)
-                return BadRequest("Usuário não pertence a este caixa");
+                return BadRequest("Usuário não pertence a este caixa.");
 
             statusCaixa.Status = StatusDoCaixaEnum.Fechado;
             statusCaixa.DataFechamento = DateTime.Now;
