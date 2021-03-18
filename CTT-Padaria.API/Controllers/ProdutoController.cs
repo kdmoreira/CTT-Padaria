@@ -120,7 +120,7 @@ namespace CTT_Padaria.API.Controllers
                 {
                     var producao = _repoProduto.Produzir(produtoEncontrado, produto.Quantidade);
                     if (producao == null)
-                        return BadRequest("Matéria prima insuficiente para esta quantidade de produto.");
+                        return BadRequest("Não há receita ou matéria prima suficiente para esta quantidade de produto.");
                 }
 
                 produto.Quantidade += produtoEncontrado.Quantidade;

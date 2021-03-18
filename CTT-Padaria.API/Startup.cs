@@ -12,6 +12,7 @@ using Padaria.Data.Contexto;
 using Padaria.Data.Repository.Implementation;
 using Padaria.Data.Repository.Interface;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -30,16 +31,17 @@ namespace CTT_Padaria.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PadariaContexto>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
+                options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnectionKarina")));
 
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
-                { 
+                {
                     Version = "v1",
                     Title = "The New Bakery",
                     Description = "Projeto Final - Sistema para uma Padaria | Grupo 2 (Bruno, Gilvaneide, Jéssica, Karina)",
@@ -49,6 +51,33 @@ namespace CTT_Padaria.API
                         Name = "Bruno, Gilvaneide, Jéssica, Karina",
                         Email = string.Empty,
                         Url = new Uri("https://github.com/kdmoreira/CTT-Padaria")
+                    }
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
                     }
                 });
 
@@ -91,17 +120,17 @@ namespace CTT_Padaria.API
         {
             if (env.IsDevelopment())
             {
-                    app.UseDeveloperExceptionPage();
-                    app.UseSwagger();
-                    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "The New Bakery"));
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "The New Bakery"));
             }
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
-           
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -109,5 +138,5 @@ namespace CTT_Padaria.API
                 endpoints.MapControllers();
             });
         }
-    } 
+    }
 }

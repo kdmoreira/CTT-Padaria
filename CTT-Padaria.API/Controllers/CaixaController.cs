@@ -14,7 +14,7 @@ namespace CTT_Padaria.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    [Authorize(Roles = "Administrador, Vendedor")]
+    [Authorize(Roles = "Administrador,Vendedor")]
     public class CaixaController : ControllerBase
     {
         private readonly ICaixaRepository _repoCaixa;
@@ -43,13 +43,8 @@ namespace CTT_Padaria.API.Controllers
                     var caixas = _repoCaixa.SelecionarPorData(data);
                     if (caixas.Count < 1)
                         return BadRequest("Não existe caixas registrados nesta data.");
-
-                    var cxData = _mapper.Map<IEnumerable<CaixasDto>>(caixas);
-                    var vTotalCaixas = new CaixaTotalDto()
-                    {
-                        ValorTotal = cxData.Sum(c => c.ValorTotal),
-                        Caixas = cxData.ToList()
-                    };
+                    
+                    var valorVendas = caixas.Sum(c => c.ValorTotal);
 
                     return Ok(vTotalCaixas);
                 }
@@ -82,7 +77,16 @@ namespace CTT_Padaria.API.Controllers
                 if (caixa == null)
                     return NoContent();
 
-                return Ok(_mapper.Map<CaixaDto>(caixa));                
+                if (data.Date != new DateTime())
+                {
+                    var caixaDataVenda = caixa.Vendas.Where(v => v.DataVenda.Date == data);
+                    var ValorTotal = caixaDataVenda.Sum(v => v.ValorTotal);
+                    
+                    return Ok($"Valor referente as vendas do caixa Id: {caixa.Id} na data {data} " +
+                        $"foi de R$:{ValorTotal} {caixaDataVenda}");
+                }
+
+                return Ok(caixa);
             }
             catch (System.Exception)
             {
@@ -97,7 +101,7 @@ namespace CTT_Padaria.API.Controllers
             {
                 var existeCaixaAberto = _repoCaixa.VerificaExisteCaixaAberto();
                 if (existeCaixaAberto != null)
-                    return BadRequest($"Caixa Id{existeCaixaAberto.Id} está aberto," +
+                    return BadRequest($"Caixa Id{existeCaixaAberto.Id} está aberto, " +
                         $"não é permitido abrir o caixa sem fechar o anterior.");
 
                 var usuario = _repoUsuario.Selecionar(caixa.UsuarioId);
@@ -131,7 +135,7 @@ namespace CTT_Padaria.API.Controllers
                 return BadRequest($"Caixa Id:{statusCaixa.Id} não esta aberto.");
 
             if (statusCaixa.UsuarioId != caixa.UsuarioId)
-                return BadRequest("Usuário não pertence a este caixa");
+                return BadRequest("Usuário não pertence a este caixa.");
 
             statusCaixa.Status = StatusDoCaixaEnum.Fechado;
             statusCaixa.DataFechamento = DateTime.Now;
