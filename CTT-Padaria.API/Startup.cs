@@ -36,12 +36,12 @@ namespace CTT_Padaria.API
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            
-            
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
-                { 
+                {
                     Version = "v1",
                     Title = "The New Bakery",
                     Description = "Projeto Final - Sistema para uma Padaria | Grupo 2 (Bruno, Gilvaneide, Jéssica, Karina)",
@@ -63,23 +63,23 @@ namespace CTT_Padaria.API
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-      {
-        {
-          new OpenApiSecurityScheme
-          {
-            Reference = new OpenApiReference
-              {
-                Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
-              },
-              Scheme = "oauth2",
-              Name = "Bearer",
-              In = ParameterLocation.Header,
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
 
-            },
-            new List<string>()
-          }
-        });
+                        },
+                        new List<string>()
+                    }
+                });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -120,17 +120,17 @@ namespace CTT_Padaria.API
         {
             if (env.IsDevelopment())
             {
-                    app.UseDeveloperExceptionPage();
-                    app.UseSwagger();
-                    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "The New Bakery"));
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "The New Bakery"));
             }
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
-           
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -138,5 +138,5 @@ namespace CTT_Padaria.API
                 endpoints.MapControllers();
             });
         }
-    } 
+    }
 }
