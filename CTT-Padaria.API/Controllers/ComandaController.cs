@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using CTT_Padaria.API.Dto;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
-using Padaria.Domain.Enum;
 using Padaria.Domain.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CTT_Padaria.API.Controllers
 {
@@ -38,7 +34,7 @@ namespace CTT_Padaria.API.Controllers
 
                 return Ok(_mapper.Map<ComandaDto>(comanda));
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return StatusCode(500);
             }

@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using CTT_Padaria.API.Dto;
 using Padaria.Domain.Model;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CTT_Padaria.API.Helpers
 {

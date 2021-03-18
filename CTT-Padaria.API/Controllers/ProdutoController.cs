@@ -145,10 +145,11 @@ namespace CTT_Padaria.API.Controllers
                     return BadRequest($"O caixa Id{caixaAberto.Id} " +
                         $"está aberto. Para descartar os produtos, todos os caixas devem estar fechados.");
 
-                var produtosDescartados = _repoProduto.SelecionarProdutosPropios();
+                var produtosDescartados = _repoProduto.SelecionarProdutosProprios();
                 _repoProduto.DescarteProduzidos();
 
-                return Ok(_mapper.Map<IEnumerable<ProdutoDescarteDto>>(produtosDescartados));
+                var pd = produtosDescartados;
+                return Ok(_mapper.Map<IEnumerable<ProdutoDescarteDto>>(pd));
 
             }
             catch (System.Exception)

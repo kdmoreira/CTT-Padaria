@@ -12,10 +12,10 @@ namespace Padaria.Data.Repository.Implementation
     {
         public ProdutoRepository(PadariaContexto contexto) : base(contexto) { }
 
-        public List<Produto> SelecionarProdutosPropios()
+        public List<Produto> SelecionarProdutosProprios()
         {
             return _contexto.Produtos
-               .Where(x => x.Producao.Equals(0))
+               .Where(x => x.Producao == 0)
                .ToList();
         }
 

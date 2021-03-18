@@ -11,7 +11,7 @@ namespace Padaria.Data.Repository.Interface
         Produto SelecionarProdutoPorNome(string nome);       
         Produto Produzir(Produto produtoEncontrado, float quantidade);
         List<Produto> SelecionarInativos();
-        List<Produto> SelecionarProdutosPropios();
+        List<Produto> SelecionarProdutosProprios();
         List<Produto> SelecionarInativosPorNome(string nome);
     }
 }

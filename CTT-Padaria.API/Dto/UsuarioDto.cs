@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CTT_Padaria.API.Dto
+﻿namespace CTT_Padaria.API.Dto
 {
     public class UsuarioDto
     {

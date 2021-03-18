@@ -1,10 +1,4 @@
-﻿using Padaria.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CTT_Padaria.API.Dto
+﻿namespace CTT_Padaria.API.Dto
 {
     public class ProdutoMateriaDto
     {
