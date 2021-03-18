@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
@@ -9,8 +10,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class ComandaController : ControllerBase
     {
         private readonly IComandaRepository _repoComanda;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
@@ -9,8 +10,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador,Estoquista,Padeiro")]
+    [Authorize]
+    [Authorize(Roles = "Administrador,Estoquista,Padeiro")]
     public class ProdutoMateriaController : ControllerBase
     {
         private readonly IProdutoMateriaRepository _repoProdutoMateria;

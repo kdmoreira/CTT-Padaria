@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
 using System.Linq;
@@ -7,8 +8,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class ProdutoComandaController : ControllerBase
     {
         private readonly IProdutoComandaRepository _repoProdutoComanda;

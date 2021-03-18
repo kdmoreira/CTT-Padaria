@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CTT_Padaria.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Padaria.Data.Repository.Interface;
 using Padaria.Domain.Model;
@@ -9,8 +10,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _repoUsuario;
@@ -48,28 +49,7 @@ namespace CTT_Padaria.API.Controllers
                 return StatusCode(500);
             }
         }
-
-        /// <summary>
-        /// Incluir Usuário.
-        /// </summary>   
-        /// <remarks>
-        /// Exemplo de request:        
-        ///     Put /api/clientes/1
-        ///     
-        ///         {
-        ///             "nome": "NomeUsuario",,
-        ///             "email" : "emailUsuario@mail.com",
-        ///             "senha": "123",
-        ///             "perfil": "Vendedor",
-        ///             "dataNascimento": "2000-05-04"
-        ///         }
-        /// </remarks>
-        /// <response code="201">Cliente alterado com sucesso.</response>
-        /// <response code="204">Cliente não foi encontrado.</response>
-        /// <response code="500">Erro interno no Servidor.</response>
-        [ProducesResponseType(201)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(500)]
+        
         [HttpPost]
         public IActionResult Post([FromBody] Usuario usuario)
         {

@@ -13,8 +13,8 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class VendaController : ControllerBase
     {
         private readonly IVendaRepository _repoVenda;
@@ -93,19 +93,19 @@ namespace CTT_Padaria.API.Controllers
                     return BadRequest("Comanda ja registrada. Favor verificar o número da comanda.");
 
                 venda.DataVenda = DateTime.Now;
-                venda.ValorTotal = comanda.ProdutosComanda.Sum(pc => pc.PrecoTotal);               
+                venda.ValorTotal = comanda.ProdutosComanda.Sum(pc => pc.PrecoTotal);
                 venda.StatusDaVenda = StatusDaVendaEnum.Realizada;
                 venda.UsuarioId = caixa.UsuarioId;
 
 
                 if (venda.FormaDePagamento == FormaDePagamentoEnum.Dinheiro)
                 {
-                    if (venda.Dinheiro < venda.ValorTotal || venda .Dinheiro == null)
+                    if (venda.Dinheiro < venda.ValorTotal || venda.Dinheiro == null)
                         return BadRequest("Dinheiro insuficiente");
 
                     venda.Troco = venda.Dinheiro - venda.ValorTotal;
                 }
-                
+
                 _repoVenda.Incluir(venda);
 
                 return Ok(_mapper.Map<VendaDto>(venda));
@@ -114,6 +114,6 @@ namespace CTT_Padaria.API.Controllers
             {
                 return StatusCode(500);
             }
-        }       
+        }
     }
 }
