@@ -15,36 +15,18 @@ namespace CTT_Padaria.API.Controllers
         private readonly IProdutoComandaRepository _repoProdutoComanda;
         private readonly IProdutoRepository _repoProduto;
         private readonly IComandaRepository _repoComanda;
+        private readonly IVendaRepository _repoVenda;
 
         public ProdutoComandaController(IProdutoComandaRepository repoProdutoComanda,
                                       IProdutoRepository repoProduto,
-                                      IComandaRepository repoComanda)
+                                      IComandaRepository repoComanda,
+                                      IVendaRepository repoVenda)
         {
             _repoProdutoComanda = repoProdutoComanda;
             _repoProduto = repoProduto;
             _repoComanda = repoComanda;
+            _repoVenda = repoVenda;
         }
-
-
-
-        //[HttpGet("{id}")]
-        //public IActionResult GetById(int id)
-        //{
-        //    try
-        //    {
-        //        var produtoComanda = _repoProdutoComanda.SelecionarPorComandaId(id);
-        //        if (produtoComanda == null)
-        //            return NoContent();
-
-        //        return Ok(produtoComanda);
-
-        //    }
-        //    catch (System.Exception)
-        //    {
-
-        //        return StatusCode(500);
-        //    }
-        //}
 
 
         [HttpPost]
@@ -52,6 +34,10 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
+                var vendaJaRealizada = _repoVenda.SelecionarComandaId(produtoComanda.ComandaId);
+                if (vendaJaRealizada != null)
+                    return BadRequest("Comanda ja registrada. Favor verificar o número da comanda.");
+
                 var produto = _repoProduto.Selecionar(produtoComanda.ProdutoId);
                 if (produto == null)
                     return NoContent();
@@ -87,26 +73,6 @@ namespace CTT_Padaria.API.Controllers
                 _repoProdutoComanda.Incluir(produtoComanda);               
 
                 return Created("","Produto foi adicionado com sucesso.");
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(500);
-            }
-        }
-        
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            try
-            {
-                var produtoComandaExiste = _repoProdutoComanda.Selecionar(id);
-                if (produtoComandaExiste == null)
-                    return NoContent();
-
-                _repoProdutoComanda.Excluir(produtoComandaExiste);
-
-                return Ok("Usuário removido com sucesso.");
             }
             catch (System.Exception)
             {

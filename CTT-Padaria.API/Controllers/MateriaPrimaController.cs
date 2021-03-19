@@ -10,8 +10,7 @@ namespace CTT_Padaria.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    [Authorize(Roles = "Administrador,Estoquista")]
+    [Authorize]    
     public class MateriaPrimaController : ControllerBase
     {
         private readonly IMateriaPrimaRepository _repoMateriaPrima;
@@ -23,6 +22,8 @@ namespace CTT_Padaria.API.Controllers
             _mapper = mapper;
         }
 
+
+        [Authorize(Roles = "Administrador, Estoquista, Padeiro")]
         [HttpGet]
         public IActionResult Get([FromQuery] bool inativas, string nome)
         {
@@ -58,6 +59,7 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador, Estoquista, Padeiro")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -75,6 +77,7 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador, Estoquista")]
         [HttpPost]
         public IActionResult Post([FromBody] MateriaPrima materiaPrima)
         {
@@ -105,6 +108,7 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador, Estoquista")]
         [HttpPut]
         public IActionResult Put([FromBody] MateriaPrima materiaPrima)
         {

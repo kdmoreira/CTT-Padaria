@@ -128,7 +128,7 @@ namespace CTT_Padaria.API.Controllers
                 return Ok("Produto alterado com sucesso.");
 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return StatusCode(500);
             }
@@ -158,7 +158,6 @@ namespace CTT_Padaria.API.Controllers
                 return StatusCode(500);
             }
         }
-
 
     }
 }

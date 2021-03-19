@@ -79,8 +79,7 @@ namespace Padaria.Data.Repository.Implementation
             var receita = _contexto.ProdutosMaterias.Where(x => x.ProdutoId.Equals(produtoEncontrado.Id)).ToList();
             if (receita.Count <= 0)
                 return null;
-
-            //float diferenca = quantidade - produtoEncontrado.Quantidade;
+           
             List<float> quantidadesProporcionais = new List<float>();
 
             for (int k = receita.Count - 1; k >= 0; k--)

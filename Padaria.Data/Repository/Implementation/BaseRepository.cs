@@ -38,13 +38,6 @@ namespace Padaria.Data.Repository.Implementation
             if (resposta == null)
                 return null;
 
-            /* foreach (PropertyInfo propertyInfo in entity.GetType().GetProperties())
-            {
-                if (propertyInfo != null)
-                    _contexto.Entry(??).CurrentValues
-                    .SetValues(propertyInfo);
-            } */
-
             _contexto.Entry(resposta).CurrentValues.SetValues(entity);           
             _contexto.SaveChanges();
 

@@ -36,8 +36,6 @@ namespace CTT_Padaria.API.Controllers
 
                 if (email != null)
                 {
-                    //var usuarioEmail = _repoUsuario.SelecionarPorEmail(email);
-                    //return Ok(_mapper.Map<UsuarioDto>(usuarioEmail));
                     var usuarioEmail = _repoUsuario.SelecionarPorEmail(email);
                     if (usuarioEmail == null)
                         return BadRequest("Não existem usuários com este email.");

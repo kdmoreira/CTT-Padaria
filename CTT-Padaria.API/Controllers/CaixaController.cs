@@ -19,17 +19,14 @@ namespace CTT_Padaria.API.Controllers
     {
         private readonly ICaixaRepository _repoCaixa;
         private readonly IUsuarioRepository _repoUsuario;
-        private readonly IProdutoRepository _repoProduto;
         private readonly IMapper _mapper;
 
         public CaixaController(ICaixaRepository repoCaixa,
                                IUsuarioRepository repoUsuario,
-                               IProdutoRepository repoProduto,
                                IMapper mapper)
         {
             _repoCaixa = repoCaixa;
-            _repoUsuario = repoUsuario;
-            _repoProduto = repoProduto;
+            _repoUsuario = repoUsuario;         
             _mapper = mapper;
         }
 
@@ -95,12 +92,15 @@ namespace CTT_Padaria.API.Controllers
         {
             try
             {
+                var usuario = _repoUsuario.Selecionar(caixa.UsuarioId);
+                if (usuario == null)
+                    return NoContent();
+
                 var existeCaixaAberto = _repoCaixa.VerificaExisteCaixaAberto();
                 if (existeCaixaAberto != null)
                     return BadRequest($"Caixa Id{existeCaixaAberto.Id} está aberto," +
                         $"não é permitido abrir o caixa sem fechar o anterior.");
 
-                var usuario = _repoUsuario.Selecionar(caixa.UsuarioId);
                 if (usuario.Perfil != "Vendedor" && usuario.Perfil != "Administrador")
                     return BadRequest("Perfil do usuário não corresponde ao de 'Vendedor' ou 'Administrador'.");
 
@@ -111,7 +111,7 @@ namespace CTT_Padaria.API.Controllers
 
                 _repoCaixa.Incluir(caixa);
 
-                return Ok("Caixa Aberto.");
+                return Ok($"Caixa {caixa.Id} Aberto.");
             }
             catch (System.Exception)
             {

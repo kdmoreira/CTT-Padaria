@@ -35,7 +35,7 @@ namespace CTT_Padaria.API.Controllers
                 return Ok(_mapper.Map<IEnumerable<ProdutoMateriaDto>>(produtosMaterias));
 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return StatusCode(500);
             }
@@ -88,11 +88,6 @@ namespace CTT_Padaria.API.Controllers
 
                 if (produtoMaterias == null)
                     return BadRequest("Esse produto não está vinculado a esta matéria prima.");
-
-               
-                //if (produtoMaterias != null)
-                //    return BadRequest("Esse produto não está vinculado a esta matéria prima.");
-
 
                 _repoProdutoMateria.Excluir(produtoMaterias);
 

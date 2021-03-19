@@ -20,8 +20,6 @@ namespace Padaria.Data.Repository.Implementation
 
         public Usuario SelecionarPorEmail(string email)
         {
-            //var a = _contexto.Usuarios.FirstOrDefault(x => x.Email == email);
-            //return a;
             return _contexto.Usuarios.FirstOrDefault(x => x.Email == email);
         }
 
