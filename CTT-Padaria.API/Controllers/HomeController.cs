@@ -22,7 +22,7 @@ namespace CTT_Padaria.API.Controllers
         /// </summary>
         /// <remarks>
         /// Exemplo de request:
-        ///     Post /api/Home/login
+        ///     POST /api/Home/login
         ///     
         ///         {
         ///             "nome" : "Thaise",

@@ -28,7 +28,29 @@ namespace CTT_Padaria.API.Controllers
             _repoVenda = repoVenda;
         }
 
-
+        /// <summary>
+        /// Insere produto na comanda.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/ProdutoComanda
+        ///     
+        ///         {
+        ///             "comandaId" : 1,
+        ///             "produtoId" : 7,
+        ///             "quantidade" : 2
+        ///         }
+        /// </remarks>
+        /// <response code="200">Comanda atualizada com sucesso.</response>
+        /// <response code="201">Produto inserido com sucesso.</response>
+        /// <response code="204">Produto ou comanda não existem.</response>
+        /// <response code="400">Erro de validação.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public IActionResult Post([FromBody] ProdutoComanda produtoComanda)
         {

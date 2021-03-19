@@ -28,6 +28,21 @@ namespace CTT_Padaria.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Retorna todos os produtos ativos.
+        /// </summary>
+        /// <param name="inativos">Opção para retornar inativos também (true).</param>
+        /// <param name="nome">Nome do produto.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/Produto
+        /// </remarks>
+        /// <response code="200">Retorna os produtos.</response>
+        /// <response code="204">Produto não existe.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get([FromQuery]bool inativos, string nome)
         {
@@ -69,6 +84,28 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar produto.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/Produto
+        ///     
+        ///         {
+        ///             "nome" : "Omelete",
+        ///             "unidadeDeMedida" : 2,
+        ///             "producao" : 0,
+        ///             "valor" : 5,
+        ///             "quantidade" : 5,
+        ///             "ativo" : true
+        ///         }
+        /// </remarks>
+        /// <response code="201">Cadastra um produto.</response>
+        /// <response code="400">Erro de validação.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public IActionResult Post([FromBody] Produto produto)
         {
@@ -106,6 +143,31 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Alterar produto.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     PUT /api/Produto
+        ///     
+        ///         {
+        ///             "id" : 7,
+        ///             "nome" : "Omelete",
+        ///             "unidadeDeMedida" : 2,
+        ///             "producao" : 0,
+        ///             "valor" : 5,
+        ///             "quantidade" : 10,
+        ///             "ativo" : true
+        ///         }
+        /// </remarks>
+        /// <response code="200">Altera um produto.</response>
+        /// <response code="204">Produto não encontrado.</response>
+        /// <response code="400">Não há receita ou matéria prima suficiente para esta quantidade de produto.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPut]
         public IActionResult Put([FromBody] Produto produto)
         {
@@ -134,6 +196,19 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Descartar produtos próprios.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     PUT /api/Produto/Descarte
+        /// </remarks>
+        /// <response code="200">Descarta os produtos próprios.</response>
+        /// <response code="400">Para descartar os produtos, todos os caixas devem estar fechados.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPut("descarte")]
         public IActionResult PutDescarte()
         {

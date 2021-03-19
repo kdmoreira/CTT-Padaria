@@ -23,6 +23,19 @@ namespace CTT_Padaria.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Retorna todas as receitas (ProdutoMateria).
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/ProdutoMateria
+        /// </remarks>
+        /// <response code="200">Retorna as receitas.</response>
+        /// <response code="204">Vínculo não existe.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get()
         {
@@ -41,7 +54,26 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Vincula um produto a uma matéria-prima.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/ProdutoMateria
+        ///     
+        ///         {
+        ///             "produtoId" : 7,
+        ///             "materiaPrimaId" : 6,
+        ///             "quantidade" : 2,
+        ///             "porcao": 1
+        ///         }
+        /// </remarks>
+        /// <response code="201">Vincula um produto a uma matéria-prima.</response>
+        /// <response code="400">Esse produto já está vinculado a esta matéria prima.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public IActionResult Post([FromBody] ProdutoMateria produtoMateria)
         {
@@ -61,6 +93,26 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Altera um vínculo de produto e matéria-prima.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     PUT /api/ProdutoMateria
+        ///     
+        ///         {
+        ///             "produtoId" : 7,
+        ///             "materiaPrimaId" : 6,
+        ///             "quantidade" : 1,
+        ///             "porcao": 1
+        ///         }
+        /// </remarks>
+        /// <response code="200">Alterações realizadas com sucesso.</response>
+        /// <response code="204">Este vínculo não existe.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpPut]
         public IActionResult Put([FromBody] ProdutoMateria produtoMateria)
         {
@@ -71,7 +123,7 @@ namespace CTT_Padaria.API.Controllers
                 if (produtoMateriaAlterado == null)
                     return NoContent();
 
-                return Ok("Matéria vinculada ao prduto com sucesso.");
+                return Ok("Alterações realizadas com sucesso.");
             }
             catch (System.Exception)
             {
@@ -79,6 +131,21 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deleta um vínculo de produto e matéria-prima.
+        /// </summary>
+        /// <param name="produtoId">Identificador do produto.</param>
+        /// <param name="materiaPrimaId">Identificador da matéria-prima.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     DELETE /api/ProdutoMateria
+        /// </remarks>
+        /// <response code="200">Matéria foi desvinculada do produto.</response>
+        /// <response code="400">Esse produto não está vinculado a esta matéria prima.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpDelete("{produtoId}/{materiaPrimaId}")]
         public IActionResult Delete(int produtoId, int materiaPrimaId)
         {

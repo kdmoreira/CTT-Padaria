@@ -33,6 +33,19 @@ namespace CTT_Padaria.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Retorna todas as vendas.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/Venda
+        /// </remarks>
+        /// <response code="200">Retorna todas as vendas.</response>
+        /// <response code="204">Venda não existe.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get()
         {
@@ -51,8 +64,22 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna uma venda pelo identificador da comanda.
+        /// </summary>
+        /// <param name="id">Identificador da comanda.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/Venda/1
+        /// </remarks>
+        /// <response code="200">Retorna a venda.</response>
+        /// <response code="204">Venda não existe.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpGet("{id}")]
-        public IActionResult GetByName(int id)
+        public IActionResult GetById(int id)
         {
             try
             {
@@ -68,7 +95,36 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Realizar venda.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/Venda
+        ///     
+        ///         Dinheiro:
+        ///         {
+        ///             "comandaId" : 1,
+        ///             "formaDePagamento" : 0,
+        ///             "dinheiro": 5,
+        ///             "caixaId": 1
+        ///         }
+        ///         
+        ///         Cartão:
+        ///         {
+        ///             "comandaId" : 2,
+        ///             "formaDePagamento" : 1,
+        ///             "caixaId": 2
+        ///         }
+        /// </remarks>
+        /// <response code="200">Realiza uma venda.</response>
+        /// <response code="204">Id do caixa incorreto.</response>
+        /// <response code="400">Erro de validação.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public IActionResult Post([FromBody] Venda venda)
         {

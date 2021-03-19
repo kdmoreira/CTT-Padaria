@@ -23,6 +23,20 @@ namespace CTT_Padaria.API.Controllers
             _mapper = mapper;
         }
 
+
+        /// <summary>
+        /// Retorna todos os usuários.
+        /// </summary>
+        /// <param name="nome">Nome do usuário.</param>
+        /// <param name="email">Email do usuário.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/Usuario
+        /// </remarks>
+        /// <response code="200">Retorna o(s) usuário(s).</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get([FromQuery] string nome, string email)
         {
@@ -51,7 +65,28 @@ namespace CTT_Padaria.API.Controllers
                 return StatusCode(500);
             }
         }
-        
+
+        /// <summary>
+        /// Cadastrar um usuário.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/Usuario
+        ///     
+        ///         {
+        ///             "nome" : "Caroline",
+        ///             "email" : "carol@gmail.com",
+        ///             "dataNascimento" : "1991-10-18",
+        ///             "perfil": "Estoquista",
+        ///             "senha": 123
+        ///         }
+        /// </remarks>
+        /// <response code="201">Usuário cadastrado com sucesso.</response>
+        /// <response code="400">Todos os campos são obrigatórios.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public IActionResult Post([FromBody] Usuario usuario)
         {
@@ -76,6 +111,28 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Altera um usuário.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     PUT /api/Usuario
+        ///     
+        ///         {
+        ///             "id" : 5,
+        ///             "nome" : "Caroline",
+        ///             "email" : "carol@gmail.com",
+        ///             "dataNascimento" : "1991-10-18",
+        ///             "perfil": "Estoquista",
+        ///             "senha": 123456
+        ///         }
+        /// </remarks>
+        /// <response code="200">Usuário alterado com sucesso.</response>
+        /// <response code="204">Usuário não existe.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpPut]
         public IActionResult Put([FromBody] Usuario usuario)
         {
@@ -94,6 +151,20 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deleta um usuário.
+        /// </summary>
+        /// <param name="id">Identificador do usuário.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     DELETE /api/Usuario/5
+        /// </remarks>
+        /// <response code="200">Usuário removido com sucesso.</response>
+        /// <response code="204">Usuário não existe.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

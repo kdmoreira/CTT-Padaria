@@ -30,6 +30,22 @@ namespace CTT_Padaria.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Retorna todos os caixas, podendo fazê-lo por data.
+        /// </summary>
+        /// <param name="data">Data de abertura do caixa.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/Caixa
+        /// </remarks>
+        /// <response code="200">Retorna todos os caixas.</response>
+        /// <response code="204">Não existem caixas.</response>
+        /// <response code="400">Não existe caixas registrados nesta data.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get([FromQuery] DateTime data)
         {
@@ -70,6 +86,20 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna um caixa pelo Id.
+        /// </summary>
+        /// <param name="id">Identificador do caixa.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/Caixa/1
+        /// </remarks>
+        /// <response code="200">Retorna o caixa pelo Id.</response>
+        /// <response code="204">Não existe caixa com este Id.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -87,6 +117,25 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Abrir caixa.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/Caixa
+        ///     
+        ///         {
+        ///             "usuarioId" : 1
+        ///         }
+        /// </remarks>
+        /// <response code="200">Caixa aberto com sucesso.</response>
+        /// <response code="204">Usuário não existe.</response>
+        /// <response code="400">Já existe um caixa aberto ou o perfil do usuário não corresponde.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public IActionResult Post([FromBody] Caixa caixa)
         {
@@ -119,26 +168,53 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Fechar caixa.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     PUT /api/Caixa
+        ///     
+        ///         {
+        ///             "id" : 1,
+        ///             "usuarioId" : 1
+        ///         }
+        /// </remarks>
+        /// <response code="200">Caixa fechado com sucesso.</response>
+        /// <response code="204">Caixa não existe.</response>
+        /// <response code="400">Caixa não está aberto ou usuário não pertence a este caixa.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPut("FecharCaixa")]
         public IActionResult PutFecharCaixa(Caixa caixa)
         {
-            var statusCaixa = _repoCaixa.Selecionar(caixa.Id);
-            if (statusCaixa == null)
-                return NoContent();
+            try
+            {
+                var statusCaixa = _repoCaixa.Selecionar(caixa.Id);
+                if (statusCaixa == null)
+                    return NoContent();
 
-            if (statusCaixa.Status == StatusDoCaixaEnum.Fechado)
-                return BadRequest($"Caixa Id:{statusCaixa.Id} não esta aberto.");
+                if (statusCaixa.Status == StatusDoCaixaEnum.Fechado)
+                    return BadRequest($"Caixa Id:{statusCaixa.Id} não esta aberto.");
 
-            if (statusCaixa.UsuarioId != caixa.UsuarioId)
-                return BadRequest("Usuário não pertence a este caixa");
+                if (statusCaixa.UsuarioId != caixa.UsuarioId)
+                    return BadRequest("Usuário não pertence a este caixa");
 
-            statusCaixa.Status = StatusDoCaixaEnum.Fechado;
-            statusCaixa.DataFechamento = DateTime.Now;
-            statusCaixa.ValorTotal = statusCaixa.Vendas.Sum(v => v.ValorTotal);
+                statusCaixa.Status = StatusDoCaixaEnum.Fechado;
+                statusCaixa.DataFechamento = DateTime.Now;
+                statusCaixa.ValorTotal = statusCaixa.Vendas.Sum(v => v.ValorTotal);
 
-            _repoCaixa.Alterar(statusCaixa);
-            return Ok(_mapper.Map<CaixasDto>(statusCaixa));
+                _repoCaixa.Alterar(statusCaixa);
+                return Ok(_mapper.Map<CaixasDto>(statusCaixa));
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500);
+            }
         }
     }
 }

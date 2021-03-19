@@ -22,7 +22,21 @@ namespace CTT_Padaria.API.Controllers
             _mapper = mapper;
         }
 
-
+        /// <summary>
+        /// Retorna todas as matérias primas ativas.
+        /// </summary>
+        /// <param name="inativas">Opção para retornar inativas também (true).</param>
+        /// <param name="nome">Nome da matéria-prima.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/MateriaPrima
+        /// </remarks>
+        /// <response code="200">Retorna as matérias-primas.</response>
+        /// <response code="204">Não existem matérias primas cadastradas.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         [Authorize(Roles = "Administrador, Estoquista, Padeiro")]
         [HttpGet]
         public IActionResult Get([FromQuery] bool inativas, string nome)
@@ -59,6 +73,20 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna uma matéria-prima pelo Id.
+        /// </summary>
+        /// <param name="id">Identificador da matéria-prima.</param>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     GET /api/MateriaPrima/1
+        /// </remarks>
+        /// <response code="200">Retorna matéria-prima.</response>
+        /// <response code="400">Não existe matéria-prima com esse Id.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [Authorize(Roles = "Administrador, Estoquista, Padeiro")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -77,6 +105,26 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar matéria-prima.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/MateriaPrima
+        ///         
+        ///         {
+        ///             "nome": "Leite Condensado Moça",
+        ///             "unidadeDeMedida": 1,
+        ///             "quantidade": 1000,
+        ///             "ativa": false
+        ///         }
+        /// </remarks>
+        /// <response code="201">Cadastra a matéria-prima.</response>
+        /// <response code="400">Erro de validação.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [Authorize(Roles = "Administrador, Estoquista")]
         [HttpPost]
         public IActionResult Post([FromBody] MateriaPrima materiaPrima)
@@ -108,6 +156,27 @@ namespace CTT_Padaria.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Alterar matéria-prima.
+        /// </summary>
+        /// <remarks>
+        /// Exemplo de request:
+        ///     POST /api/MateriaPrima
+        ///         
+        ///         {
+        ///             "id": 10,
+        ///             "nome": "Leite Condensado Moça",
+        ///             "unidadeDeMedida": 1,
+        ///             "quantidade": 99,
+        ///             "ativa": false
+        ///         }
+        /// </remarks>
+        /// <response code="200">Altera a matéria-prima.</response>
+        /// <response code="400">Erro de validação.</response>
+        /// <response code="500">Erro interno no Servidor.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [Authorize(Roles = "Administrador, Estoquista")]
         [HttpPut]
         public IActionResult Put([FromBody] MateriaPrima materiaPrima)
