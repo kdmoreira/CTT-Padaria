@@ -4,4 +4,60 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20210312184145_add-migration materiaPrima.cs" />
+    <Compile Remove="Migrations\20210312184145_add-migration materiaPrima.Designer.cs" />
+    <Compile Remove="Migrations\20210312184219_materiaPrima.cs" />
+    <Compile Remove="Migrations\20210312184219_materiaPrima.Designer.cs" />
+    <Compile Remove="Migrations\20210314195520_Venda-ProdutoVenda.cs" />
+    <Compile Remove="Migrations\20210314195520_Venda-ProdutoVenda.Designer.cs" />
+    <Compile Remove="Migrations\20210314213159_Venda-ProdutoVenda.cs" />
+    <Compile Remove="Migrations\20210314213159_Venda-ProdutoVenda.Designer.cs" />
+    <Compile Remove="Migrations\20210314213551_venda-produtoVenda.cs" />
+    <Compile Remove="Migrations\20210314213551_venda-produtoVenda.Designer.cs" />
+    <Compile Remove="Migrations\20210315134753_Comanda-ProdutoComanda-Venda.cs" />
+    <Compile Remove="Migrations\20210315134753_Comanda-ProdutoComanda-Venda.Designer.cs" />
+    <Compile Remove="Migrations\20210315140148_Comanda-ProdutoComanda-Venda.cs" />
+    <Compile Remove="Migrations\20210315140148_Comanda-ProdutoComanda-Venda.Designer.cs" />
+    <Compile Remove="Migrations\20210315160425_Caixa.cs" />
+    <Compile Remove="Migrations\20210315160425_Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210315161355_Caixa.cs" />
+    <Compile Remove="Migrations\20210315161355_Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210315162556_Comanda-ProdutoComanda-Venda-caixa.cs" />
+    <Compile Remove="Migrations\20210315162556_Comanda-ProdutoComanda-Venda-caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317112926_UpdateCaixa.cs" />
+    <Compile Remove="Migrations\20210317112926_UpdateCaixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317113718_UpdateCaixa.cs" />
+    <Compile Remove="Migrations\20210317113718_UpdateCaixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317114024_UpdateCaixa.cs" />
+    <Compile Remove="Migrations\20210317114024_UpdateCaixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317114253_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317114253_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317114650_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317114650_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317115254_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317115254_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317115442_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317115442_Update-Caixa.Designer.cs" />
+    <Compile Remove="Migrations\20210317115824_Update-Caixa.cs" />
+    <Compile Remove="Migrations\20210317115824_Update-Caixa.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Padaria.Domain\Padaria.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
