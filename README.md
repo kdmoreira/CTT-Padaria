@@ -2,7 +2,7 @@
 
 ## Grupo 2: Bruno, Gilvaneide, Jéssica, Karina
 
-Projeto final para o curso de .NET (#C) do Campinas Tech Talents / ShareRH / Performa_IT  
+Projeto final para o curso de .NET (C#) do Campinas Tech Talents / ShareRH / Performa_IT  
 Instrutoras: Thamirys Gameiro e Thaise Medeiros
 
 ---
@@ -24,7 +24,7 @@ O grupo desenvolveu um projeto Web API com ASP.NET Core 3.1, o qual faz gestão 
 # Extras:
 
 - Mais de um caixa pode ser aberto por dia, desde que o anterior esteja fechado, possibilitanto abertura de caixas de acordo com turnos de funcionários.
-- No momento do incremento da quantidade de um produto produzido na padaria (o que equivale a produzir este produto), as matérias primas vinculadas a ele são abatidas do estoque de forma proporcioal à quantidade a ser incrementada, utilizando regra de três simples com base na porção de referência. Isso permite que qualquer quantidade maior que zero seja produzida na padaria, com abatimento correto de matérias-primas.
+- No momento do incremento da quantidade de um produto produzido na padaria (o que equivale a produzir este produto), as matérias primas vinculadas a ele são abatidas do estoque de forma proporcional à quantidade a ser incrementada, utilizando regra de três simples com base na porção de referência. Isso permite que qualquer quantidade maior que zero seja produzida na padaria, com abatimento correto de matérias-primas.
 
 # Estórias
 
