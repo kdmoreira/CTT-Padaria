@@ -5,6 +5,7 @@
     <RootNamespace>CTT_Padaria.API</RootNamespace>
   <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <UserSecretsId>d4268da5-35b4-41d6-a330-c6c4e850d094</UserSecretsId>
   </PropertyGroup>
 	
     	
